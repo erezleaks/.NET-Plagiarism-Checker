@@ -19,22 +19,20 @@ namespace Copyleaks.SDK.API
 		internal static readonly Uri SERVICE_URL = new Uri(Resources.ServiceEntryPoint);
 		private static readonly string LOGIN_PAGE = string.Format("{0}/account/login", Resources.ServiceVersion);
 
-		/// <summary>
-		/// Log-in into copyleaks authentication system.
-		/// </summary>
-		/// <param name="username">User name</param>
-		/// <param name="apiKey">Password</param>
-		/// <returns>Login Token to use while accessing resources.</returns>
-		/// <exception cref="ArgumentException">Occur when the username and\or password is empty</exception>
-		/// <exception cref="JsonException">ALON</exception>
-		public static LoginToken Login(string username, string apiKey)
+        /// <summary>
+        /// Login to Copyleaks authentication server.
+        /// </summary>
+        /// <param name="username">User name</param>
+        /// <param name="apiKey">Api Key</param>
+        /// <returns>Login Token to use while accessing the API services</returns>
+        /// <exception cref="ArgumentException">Username or password is missing</exception>
+        /// <exception cref="JsonException">Unexpected response from the server</exception>
+        public static LoginToken Login(string username, string apiKey)
 		{
-#if !DEBUG // For testing purposes
 			if (string.IsNullOrEmpty(username))
 				throw new ArgumentException("Username is mandatory.", "username");
 			else if (string.IsNullOrEmpty(apiKey))
 				throw new ArgumentException("Password is mandatory.", "password");
-#endif
 
 			LoginToken token;
 			using (HttpClient client = new HttpClient())
@@ -69,7 +67,12 @@ namespace Copyleaks.SDK.API
 			return token;
 		}
 
-
+        /// <summary>
+        /// Login to Copyleaks API
+        /// </summary>
+        /// <param name="username">Username</param>
+        /// <param name="apiKey">API key</param>
+        /// <returns>Login Token to use while accessing the API services</returns>
 		public static async Task<LoginToken> LoginAsync(string username, string apiKey)
 		{
 			if (string.IsNullOrEmpty(username))
@@ -108,76 +111,6 @@ namespace Copyleaks.SDK.API
 			}
 
 			return token;
-		}
-
-		public static uint CountCredits(LoginToken token)
-		{
-			token.Validate();
-
-			if (token == null)
-				throw new ArgumentException("Username is mandatory.", "username");
-
-			using (HttpClient client = new HttpClient())
-			{
-				client.SetCopyleaksClient(HttpContentTypes.Json, token);
-
-				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/account/count-credits", Resources.ServiceVersion)).Result;
-				if (!msg.IsSuccessStatusCode)
-				{
-					string errorResponse = msg.Content.ReadAsStringAsync().Result;
-					BadLoginResponse response = JsonConvert.DeserializeObject<BadLoginResponse>(errorResponse);
-					if (response == null)
-						throw new JsonException("Unable to process server response.");
-					else
-						throw new CommandFailedException(response.Message, msg.StatusCode);
-				}
-
-				string json = msg.Content.ReadAsStringAsync().Result;
-
-				if (string.IsNullOrEmpty(json))
-					throw new JsonException("This request could not be processed.");
-
-				CountCreditsResponse res = JsonConvert.DeserializeObject<CountCreditsResponse>(json);
-				if (token == null)
-					throw new JsonException("Unable to process server response.");
-
-				return res.Amount;
-			}
-		}
-
-		public static async Task<uint> CountCreditsAsync(LoginToken token)
-		{
-			token.Validate();
-
-			if (token == null)
-				throw new ArgumentNullException("token");
-
-			using (HttpClient client = new HttpClient())
-			{
-				client.SetCopyleaksClient(HttpContentTypes.Json, token);
-
-				HttpResponseMessage msg = await client.GetAsync(string.Format("{0}/account/count-credits", Resources.ServiceVersion));
-				if (!msg.IsSuccessStatusCode)
-				{
-					string errorResponse = await msg.Content.ReadAsStringAsync();
-					BadLoginResponse response = JsonConvert.DeserializeObject<BadLoginResponse>(errorResponse);
-					if (response == null)
-						throw new JsonException("Unable to process server response.");
-					else
-						throw new CommandFailedException(response.Message, msg.StatusCode);
-				}
-
-				string json = await msg.Content.ReadAsStringAsync();
-
-				if (string.IsNullOrEmpty(json))
-					throw new JsonException("This request could not be processed.");
-
-				CountCreditsResponse res = JsonConvert.DeserializeObject<CountCreditsResponse>(json);
-				if (token == null)
-					throw new JsonException("Unable to process server response.");
-
-				return res.Amount;
-			}
 		}
 	}
 }

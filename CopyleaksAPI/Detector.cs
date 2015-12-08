@@ -3,13 +3,14 @@ using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using Copyleaks.SDK.API.Exceptions;
 using Copyleaks.SDK.API.Extentions;
 using Copyleaks.SDK.API.Models.Requests;
 using Copyleaks.SDK.API.Models.Responses;
+using Copyleaks.SDK.API.Models.Responses.Copyleaks.SDK.API.Models.Responses;
 using Copyleaks.SDK.API.Properties;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Copyleaks.SDK.API
 {
@@ -19,78 +20,102 @@ namespace Copyleaks.SDK.API
 
 		public Detector(LoginToken token)
 		{
+			if (token == null)
+				throw new UnauthorizedAccessException();
+			else
+				token.Validate();
+
 			this.Token = token;
 		}
 
 		/// <summary>
-		/// 
+		/// Get your current credit balance
 		/// </summary>
-		/// <param name="url"></param>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		/// <returns></returns>
-		public async Task<ScannerProcess> CreateProcessAsync(string url)
+		/// <param name="token">Login Token</param>
+		/// <returns>Current credit balance</returns>
+		public uint Credits
 		{
-			if (this.Token == null)
-				throw new UnauthorizedAccessException("Empty token!");
-			else
+			get
+			{
 				this.Token.Validate();
 
-			using (HttpClient client = new HttpClient())
-			{
-				client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
-
-				CreateCommandRequest req = new CreateCommandRequest() { URL = url };
-
-				HttpResponseMessage msg;
-				if (File.Exists(url))
+				using (HttpClient client = new HttpClient())
 				{
-					FileInfo localFile = new FileInfo(url);
-					// Local file. Need to upload it to the server.
+					client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
 
-					using (var content = new MultipartFormDataContent("Upload----" + DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)))
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/account/count-credits", Resources.ServiceVersion)).Result;
+					if (!msg.IsSuccessStatusCode)
 					{
-						using (FileStream stream = File.OpenRead(url))
-						{
-							content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(url));
-							msg = client.PostAsync(Resources.ServiceVersion + "/detector/create-by-file", content).Result;
-						}
+						string errorResponse = msg.Content.ReadAsStringAsync().Result;
+						BadLoginResponse response = JsonConvert.DeserializeObject<BadLoginResponse>(errorResponse);
+						if (response == null)
+							throw new JsonException("Unable to process server response.");
+						else
+							throw new CommandFailedException(response.Message, msg.StatusCode);
 					}
+
+					string json = msg.Content.ReadAsStringAsync().Result;
+
+					if (string.IsNullOrEmpty(json))
+						throw new JsonException("This request could not be processed.");
+
+					CountCreditsResponse res = JsonConvert.DeserializeObject<CountCreditsResponse>(json);
+					if (res == null)
+						throw new JsonException("Unable to process server response.");
+
+					return res.Amount;
 				}
-				else
+			}
+		}
+
+		public CopyleaksProcess[] Processes
+		{
+			get
+			{
+				this.Token.Validate();
+
+				using (HttpClient client = new HttpClient())
 				{
-					// Internet path. Just submit it to the server.
-					HttpContent content = new StringContent(
-						JsonConvert.SerializeObject(req),
-						Encoding.UTF8,
-						HttpContentTypes.Json);
-					msg = client.PostAsync(Resources.ServiceVersion + "/detector/create-by-url", content).Result;
+					client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
+
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/detector/list", Resources.ServiceVersion)).Result;
+					if (!msg.IsSuccessStatusCode)
+					{
+						string errorResponse = msg.Content.ReadAsStringAsync().Result;
+						BadLoginResponse response = JsonConvert.DeserializeObject<BadLoginResponse>(errorResponse);
+						if (response == null)
+							throw new JsonException("Unable to process server response.");
+						else
+							throw new CommandFailedException(response.Message, msg.StatusCode);
+					}
+
+					string json = msg.Content.ReadAsStringAsync().Result;
+
+					if (string.IsNullOrEmpty(json))
+						throw new JsonException("This request could not be processed.");
+
+					var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
+                    ProcessInList[] rawProcesses = JsonConvert.DeserializeObject<ProcessInList[]>(json, dateTimeConverter);
+					if (rawProcesses == null)
+						throw new JsonException("Unable to process server response.");
+
+					CopyleaksProcess[] processes = new CopyleaksProcess[rawProcesses.Length];
+					for (int i = 0; i < rawProcesses.Length; i++)
+						processes[i] = new CopyleaksProcess(this.Token, rawProcesses[i]);
+
+					return processes;
 				}
-
-				if (!msg.IsSuccessStatusCode)
-				{
-					var errorJson = await msg.Content.ReadAsStringAsync();
-					var errorObj = JsonConvert.DeserializeObject<BadResponse>(errorJson);
-					if (errorObj == null)
-						throw new CommandFailedException(msg.StatusCode);
-					else
-						throw new CommandFailedException(errorObj.Message, msg.StatusCode);
-				}
-
-				string json = await msg.Content.ReadAsStringAsync();
-
-				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json);
-				return new ScannerProcess(this.Token, response.ProcessId);
 			}
 		}
 
 		/// <summary>
-		/// 
+		/// Submitting specific URL to plagiarism scan
 		/// </summary>
-		/// <param name="url">The url of the content to scan</param>
-		/// <exception cref="UnauthorizedAccessException">When security-token is undefined or expired</exception>
-		/// <exception cref="ArgumentOutOfRangeException">When the input url schema is diffrent then HTTP and HTTPS</exception>
-		/// <returns></returns>
-		public ScannerProcess CreateByUrl(Uri url, Uri httpCallback = null)
+		/// <param name="url">The url containing the content to scan</param>
+		/// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+		/// <exception cref="ArgumentOutOfRangeException">The input URL scheme is different than HTTP or HTTPS</exception>
+		/// <returns>The newly created process</returns>
+		public CopyleaksProcess CreateByUrl(Uri url, Uri httpCallback = null)
 		{
 			if (this.Token == null)
 				throw new UnauthorizedAccessException("Empty token!");
@@ -107,7 +132,7 @@ namespace Copyleaks.SDK.API
 				CreateCommandRequest req = new CreateCommandRequest() { URL = url.AbsoluteUri };
 
 				HttpResponseMessage msg;
-				// Internet path. Just submit it to the server.
+				// Submitting the URL 
 				HttpContent content = new StringContent(
 					JsonConvert.SerializeObject(req),
 					Encoding.UTF8,
@@ -130,18 +155,19 @@ namespace Copyleaks.SDK.API
 
 				string json = msg.Content.ReadAsStringAsync().Result;
 
-				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json);
-				return new ScannerProcess(this.Token, response.ProcessId);
+				var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
+				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json, dateTimeConverter);
+				return new CopyleaksProcess(this.Token, response);
 			}
 		}
 
 		/// <summary>
-		/// 
+		/// Submitting specific local file to plagiarism scan
 		/// </summary>
-		/// <param name="localfile"></param>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		/// <returns></returns>
-		public ScannerProcess CreateByFile(FileInfo localfile, Uri httpCallback = null)
+		/// <param name="localfile">Local file containing the content to scan</param>
+		/// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+		/// <returns>The newly created process</returns>
+		public CopyleaksProcess CreateByFile(FileInfo localfile, Uri httpCallback = null)
 		{
 			if (this.Token == null)
 				throw new UnauthorizedAccessException("Empty token!");
@@ -156,7 +182,7 @@ namespace Copyleaks.SDK.API
 				client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
 
 				HttpResponseMessage msg;
-				// Local file. Need to upload it to the server.
+				// Uploading the local file to the server
 
 				if (httpCallback != null)
 					client.DefaultRequestHeaders.Add("Http-Callback", httpCallback.AbsoluteUri); // Add HTTP callback to the request header.
@@ -179,19 +205,19 @@ namespace Copyleaks.SDK.API
 				}
 
 				string json = msg.Content.ReadAsStringAsync().Result;
-
-				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json);
-				return new ScannerProcess(this.Token, response.ProcessId);
+				var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
+				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json, dateTimeConverter);
+				return new CopyleaksProcess(this.Token, response);
 			}
 		}
 
 		/// <summary>
-		/// 
+		/// Submitting picture, containing textual content, to plagiarism scan
 		/// </summary>
-		/// <param name="localfile"></param>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		/// <returns></returns>
-		public ScannerProcess CreateByOcr(FileInfo localfile, Uri httpCallback = null)
+		/// <param name="localfile">The local picture containing the content to scan</param>
+		/// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+		/// <returns>The newly created process</returns>
+		public CopyleaksProcess CreateByOcr(FileInfo localfile, Uri httpCallback = null)
 		{
 			if (this.Token == null)
 				throw new UnauthorizedAccessException("Empty token!");
@@ -214,7 +240,7 @@ namespace Copyleaks.SDK.API
 					client.DefaultRequestHeaders.Add("Http-Callback", httpCallback.AbsoluteUri); // Add HTTP callback to the request header.
 
 				HttpResponseMessage msg;
-				// Local file. Need to upload it to the server.
+				// Uploading the local file to the server
 
 				using (var content = new MultipartFormDataContent("Upload----" + DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)))
 				using (FileStream stream = localfile.OpenRead())
@@ -235,8 +261,9 @@ namespace Copyleaks.SDK.API
 
 				string json = msg.Content.ReadAsStringAsync().Result;
 
-				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json);
-				return new ScannerProcess(this.Token, response.ProcessId);
+				var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
+				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json, dateTimeConverter);
+				return new CopyleaksProcess(this.Token, response);
 			}
 		}
 	}

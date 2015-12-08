@@ -4,19 +4,17 @@ using System.Threading;
 using Copyleaks.SDK.API;
 using Copyleaks.SDK.API.Models;
 
-namespace Copyleaks.SDK.SampleCode
+namespace Copyleaks.SDK.CopyleaksAPI
 {
-	public class Scanner
+	public class CopyleaksAccount
 	{
 		#region Members & Properties
 
 		const int ISCOMPLETED_SLEEP = 5000;
 
-		public string Username { get; set; }
-
-		public string ApiKey { get; set; }
-
 		protected LoginToken Token { get; set; }
+
+		private Detector Detector { get; set; }
 
 		public uint Credits
 		{
@@ -27,24 +25,36 @@ namespace Copyleaks.SDK.SampleCode
 				else
 					this.Token.Validate();
 
-				return UsersAuthentication.CountCredits(this.Token);
+				return Detector.Credits;
 			}
-
 		}
 
+		public CopyleaksProcess[] Processes
+		{
+			get
+			{
+				if (this.Token == null)
+					throw new UnauthorizedAccessException();
+				else
+					this.Token.Validate();
+
+				return Detector.Processes;
+			}
+		}
 
 		#endregion
 
-		public Scanner(string username, string APIKey)
+		public CopyleaksAccount(string username, string APIKey)
 		{
 			this.Token = UsersAuthentication.Login(username, APIKey); // This security token can be use multiple times, until it will be expired (48 hours).
+			this.Detector = new Detector(this.Token);
 		}
 
 		public ResultRecord[] ScanUrl(Uri url, Uri httpCallback = null)
 		{
 			// Create a new process on server.
 			Detector detector = new Detector(this.Token);
-			ScannerProcess process = detector.CreateByUrl(url, httpCallback);
+			CopyleaksProcess process = detector.CreateByUrl(url, httpCallback);
 
 			// Waiting to process to be finished.
 			while (!process.IsCompleted())
@@ -58,7 +68,7 @@ namespace Copyleaks.SDK.SampleCode
 		{
 			// Create a new process on server.
 			Detector detector = new Detector(this.Token);
-			ScannerProcess process = detector.CreateByFile(file, httpCallback);
+			CopyleaksProcess process = detector.CreateByFile(file, httpCallback);
 
 			// Waiting to process to be finished.
 			while (!process.IsCompleted())

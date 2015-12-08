@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Copyleaks.SDK.API.Exceptions;
@@ -11,30 +12,40 @@ using Newtonsoft.Json;
 
 namespace Copyleaks.SDK.API
 {
-	public class ScannerProcess
+	public class CopyleaksProcess
 	{
 		#region Members & Properties
 
 		public Guid PID { get; set; }
 
+		public DateTime CreationTimeUtc { get; set; }
+
 		private LoginToken SecurityToken { get; set; }
 
 		#endregion
 
-		public ScannerProcess(LoginToken authorizationToken, Guid id)
+		internal CopyleaksProcess(LoginToken authorizationToken, ProcessInList rawProcess)
 		{
-			this.PID = id;
+			this.PID = rawProcess.ProcessId;
+			this.CreationTimeUtc = rawProcess.CreationTimeUTC;
 			this.SecurityToken = authorizationToken;
 		}
-		#region IsCompleted
-		/// <summary>
-		/// Checks if the operation is completed.
-		/// </summary>
-		/// <returns>Return True in case that the operation on is finished by the server</returns>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		public async Task<bool> IsCompletedAsync()
+
+		internal CopyleaksProcess(LoginToken authorizationToken, CreateResourceResponse response)
 		{
-			this.SecurityToken.Validate(); // may throw an UnauthorizedAccessException.
+			this.PID = response.ProcessId;
+			this.CreationTimeUtc = response.CreationTimeUTC;
+			this.SecurityToken = authorizationToken;
+		}
+        #region IsCompleted
+        /// <summary>
+        /// Checks if the operation has been completed
+        /// </summary>
+        /// <returns>Returns true if the operation has been completed</returns>
+        /// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+        public async Task<bool> IsCompletedAsync()
+		{
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'.
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -58,14 +69,14 @@ namespace Copyleaks.SDK.API
 			}
 		}
 
-		/// <summary>
-		/// Checks if the operation is completed.
-		/// </summary>
-		/// <returns>Return True in case that the operation on is finished by the server</returns>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		public bool IsCompleted()
+        /// <summary>
+        /// Checks if the operation has been completed
+        /// </summary>
+        /// <returns>Returns true if the operation has been completed</returns>
+        /// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+        public bool IsCompleted()
 		{
-			this.SecurityToken.Validate(); // may throw an UnauthorizedAccessException.
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'.
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -93,17 +104,17 @@ namespace Copyleaks.SDK.API
 				return response.Status == "Finished";
 			}
 		}
-		#endregion
+        #endregion
 
-		#region GetResults
-		/// <summary>
-		/// Get the scanning resutls from server.
-		/// </summary>
-		/// <returns>Scanning results</returns>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		public async Task<ResultRecord[]> GetResultsAsync()
+        #region GetResults
+        /// <summary>
+        /// Get the scan results from the server
+        /// </summary>
+        /// <returns>Scan results</returns>
+        /// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+        public async Task<ResultRecord[]> GetResultsAsync()
 		{
-			this.SecurityToken.Validate(); // may throw an UnauthorizedAccessException.
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -125,14 +136,14 @@ namespace Copyleaks.SDK.API
 			}
 		}
 
-		/// <summary>
-		/// Get the scanning resutls from server.
-		/// </summary>
-		/// <returns>Scanning results</returns>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		public ResultRecord[] GetResults()
+        /// <summary>
+        /// Get the scan resutls from server.
+        /// </summary>
+        /// <returns>Scan results</returns>
+        /// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+        public ResultRecord[] GetResults()
 		{
-			this.SecurityToken.Validate(); // may throw an UnauthorizedAccessException.
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -153,16 +164,16 @@ namespace Copyleaks.SDK.API
 				return JsonConvert.DeserializeObject<ResultRecord[]>(json);
 			}
 		}
-		#endregion
+        #endregion
 
-		#region Delete
-		/// <summary>
-		/// Delete finished process
-		/// </summary>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		public async void DeleteAsync()
+        #region Delete
+        /// <summary>
+        /// Deletes the process once it has finished running 
+        /// </summary>
+        /// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+        public async void DeleteAsync()
 		{
-			this.SecurityToken.Validate(); // may throw an UnauthorizedAccessException.
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'.
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -174,13 +185,13 @@ namespace Copyleaks.SDK.API
 			}
 		}
 
-		/// <summary>
-		/// Delete finished process
-		/// </summary>
-		/// <exception cref="UnauthorizedAccessException"></exception>
-		public void Delete()
+        /// <summary>
+        /// Deletes the process once it has finished running
+        /// </summary>
+        /// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+        public void Delete()
 		{
-			this.SecurityToken.Validate(); // may throw an UnauthorizedAccessException.
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
 
 			using (HttpClient client = new HttpClient())
 			{

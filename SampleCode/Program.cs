@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using Copyleaks.SDK.API;
 using Copyleaks.SDK.API.Exceptions;
 using Copyleaks.SDK.API.Models;
+using Copyleaks.SDK.CopyleaksAPI;
 
 namespace Copyleaks.SDK.SampleCode
 {
@@ -28,8 +30,8 @@ namespace Copyleaks.SDK.SampleCode
 			// Use your Copyleaks account information.
 			// Generate your Account API Key: https://copyleaks.com/Account/Manage
 
-			Scanner scanner = new Scanner(options.Username, options.ApiKey);
-			uint creditsBalance = scanner.Credits;
+			CopyleaksAccount account = new CopyleaksAccount(options.Username, options.ApiKey);
+			uint creditsBalance = account.Credits;
 			if (creditsBalance == 0)
 			{
 				Console.WriteLine("ERROR: You do not have enough credits to complete this scan. Your current credits balance = {0}).", creditsBalance);
@@ -61,7 +63,7 @@ namespace Copyleaks.SDK.SampleCode
 						Environment.Exit(1);
 					}
 
-					results = scanner.ScanUrl(uri, httpCallback);
+					results = account.ScanUrl(uri, httpCallback);
                 }
 				else
 				{
@@ -71,12 +73,12 @@ namespace Copyleaks.SDK.SampleCode
 						Environment.Exit(1);
 					}
 
-					results = scanner.ScanLocalTextualFile(new FileInfo(options.LocalFile), httpCallback);
+					results = account.ScanLocalTextualFile(new FileInfo(options.LocalFile), httpCallback);
 				}
 
 				if (results.Length == 0)
 				{
-					Console.WriteLine("\tNo results.");
+					Console.WriteLine("No results.");
 				}
 				else
 				{
@@ -85,28 +87,31 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine();
 						Console.WriteLine("Result {0}:", i + 1);
 						Console.WriteLine("Url: {0}", results[i].URL);
-						Console.WriteLine("Precents: {0}", results[i].Precents);
+						Console.WriteLine("Percents: {0}", results[i].Percents);
 						Console.WriteLine("CopiedWords: {0}", results[i].NumberOfCopiedWords);
 					}
 				}
 			}
 			catch (UnauthorizedAccessException e)
 			{
-				Console.WriteLine("\tFailed!");
+				Console.WriteLine("Failed!");
 				Console.WriteLine("+Error Description:");
 				Console.WriteLine("{0}", e.Message);
+				Environment.Exit(1);
 			}
 			catch (CommandFailedException theError)
 			{
-				Console.WriteLine("\tFailed!");
+				Console.WriteLine("Failed!");
 				Console.WriteLine("+Error Description:");
 				Console.WriteLine("{0}", theError.Message);
+				Environment.Exit(1);
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine("\tFailed!");
+				Console.WriteLine("Failed!");
 				Console.WriteLine("Unhandled Exception");
 				Console.WriteLine(ex);
+				Environment.Exit(1);
 			}
 
 			Environment.Exit(0);
