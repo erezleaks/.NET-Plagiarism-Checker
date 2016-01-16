@@ -85,6 +85,6 @@ private static void Scan(string username, string apiKey, string url)
 <h3>Read More</h3>
 <ul>
 <li><a href="https://api.copyleaks.com/Guides/HowToUse">Copyleaks API guide</a></li>
-<li><a href="https://api.copyleaks.com/Help">Copyleaks API documentation</a></li>
+<li><a href="https://api.copyleaks.com/Documentation">Copyleaks API documentation</a></li>
 <li><a href="https://www.nuget.org/packages/CopyleaksAPI/">Copyleaks NuGet package</a></li>
 </ul>
