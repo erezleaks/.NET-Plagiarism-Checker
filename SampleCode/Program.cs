@@ -1,9 +1,34 @@
-﻿using System;
+﻿/********************************************************************************
+ The MIT License(MIT)
+ 
+ Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+********************************************************************************/
+
+using System;
 using System.IO;
+using System.Threading;
 using Copyleaks.SDK.API;
 using Copyleaks.SDK.API.Exceptions;
 using Copyleaks.SDK.API.Models;
-using Copyleaks.SDK.CopyleaksAPI;
+using Copyleaks.SDK.SampleCode.Helpers;
 
 namespace Copyleaks.SDK.SampleCode
 {
@@ -12,9 +37,9 @@ namespace Copyleaks.SDK.SampleCode
 		static void Main(string[] args)
 		{
 			// Usage:
-			// SampleCode.exe -u "Your Account Username" -k "Your Account Key" --url "http://site.com/your-webpage"
+			// SampleCode.exe -u "Your Account email address" -k "Your Account Key" --url "http://site.com/your-webpage"
 			// OR 
-			// SampleCode.exe -u "Your Account Username" -k "Your Account Key" --local-document "C:\your-directory\document.doc"
+			// SampleCode.exe -u "Your Account email address" -k "Your Account Key" --local-document "C:\your-directory\document.doc"
 
 			CommandLineOptions options = new CommandLineOptions();
 			if (!CommandLine.Parser.Default.ParseArguments(args, options))
@@ -23,19 +48,6 @@ namespace Copyleaks.SDK.SampleCode
 			{
 				Console.WriteLine("Error: You can speicfy either a URL or a local document to scan. For more information please enter '--help'.");
 				Environment.Exit(1);
-			}
-
-			// For more information, visit Copyleaks "How-To page": https://api.copyleaks.com/Guides/HowToUse
-			// Creating Copyleaks account: https://copyleaks.com/Account/Signup
-			// Use your Copyleaks account information.
-			// Generate your Account API Key: https://copyleaks.com/Account/Manage
-
-			CopyleaksAccount account = new CopyleaksAccount(options.Username, options.ApiKey);
-			uint creditsBalance = account.Credits;
-			if (creditsBalance == 0)
-			{
-				Console.WriteLine("ERROR: You do not have enough credits to complete this scan. Your current credits balance = {0}).", creditsBalance);
-				Environment.Exit(2);
 			}
 
 			Uri httpCallback = null;
@@ -51,9 +63,47 @@ namespace Copyleaks.SDK.SampleCode
 				}
 			}
 
+			// For more information, visit Copyleaks "How-To page": https://api.copyleaks.com/Guides/HowToUse
+			// Creating Copyleaks account: https://copyleaks.com/Account/Signup
+			// Use your Copyleaks account information.
+			// Generate your Account API Key: https://copyleaks.com/Account/Manage
+
+
+			CopyleaksCloud copyleaks = new CopyleaksCloud();
+			CopyleaksProcess createdProcess;
+			ResultRecord[] results;
+			ProcessOptions scanOptions = new ProcessOptions()
+			{
+				HttpCallback = httpCallback,
+				// SandboxMode = true // -------------------> Read more @ https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
+			};
+
 			try
 			{
-				ResultRecord[] results;
+				#region Login to Copyleaks cloud
+
+				Console.Write("Login to Copyleaks cloud...");
+				copyleaks.Login(options.Email, options.ApiKey);
+				Console.WriteLine("Done!");
+
+				#endregion
+
+				#region Checking account balance
+
+				Console.Write("Checking account balance...");
+				uint creditsBalance = copyleaks.Credits;
+				Console.WriteLine("Done ({0} credits)!", creditsBalance);
+				if (creditsBalance == 0)
+				{
+					Console.WriteLine("ERROR: You do not have enough credits to complete this scan. Your current credit balance is {0}).", creditsBalance);
+					Environment.Exit(2);
+				}
+
+				#endregion
+
+				#region Submitting a new scan process to the server
+
+				Console.Write("Creating process...");
 				if (options.URL != null)
 				{
 					Uri uri;
@@ -63,8 +113,8 @@ namespace Copyleaks.SDK.SampleCode
 						Environment.Exit(1);
 					}
 
-					results = account.ScanUrl(uri, httpCallback);
-                }
+					createdProcess = copyleaks.CreateByUrl(uri, scanOptions);
+				}
 				else
 				{
 					if (!File.Exists(options.LocalFile))
@@ -73,8 +123,31 @@ namespace Copyleaks.SDK.SampleCode
 						Environment.Exit(1);
 					}
 
-					results = account.ScanLocalTextualFile(new FileInfo(options.LocalFile), httpCallback);
+					createdProcess = copyleaks.CreateByFile(new FileInfo(options.LocalFile), scanOptions);
 				}
+				Console.WriteLine("Done (PID={0})!", createdProcess.PID);
+
+				#endregion
+
+				#region Waiting for server's process completion
+
+				Console.Write("Scanning... ");
+				using (var progress = new ProgressBar())
+				{
+					ushort currentProgress;
+					while (!createdProcess.IsCompleted(out currentProgress))
+					{
+						progress.Report(currentProgress / 100d);
+						Thread.Sleep(5000);
+					}
+				}
+				Console.WriteLine("Done.");
+
+				#endregion
+
+				#region Processing finished. Getting results
+
+				results = createdProcess.GetResults();
 
 				if (results.Length == 0)
 				{
@@ -91,18 +164,22 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine("CopiedWords: {0}", results[i].NumberOfCopiedWords);
 					}
 				}
+
+				#endregion
 			}
-			catch (UnauthorizedAccessException e)
+			catch (UnauthorizedAccessException)
 			{
 				Console.WriteLine("Failed!");
-				Console.WriteLine("+Error Description:");
-				Console.WriteLine("{0}", e.Message);
+				Console.WriteLine("Authentication with the server failed!");
+				Console.WriteLine("Possible reasons:");
+				Console.WriteLine("* You did not log in to Copyleaks cloud");
+				Console.WriteLine("* Your login token has expired");
 				Environment.Exit(1);
 			}
 			catch (CommandFailedException theError)
 			{
 				Console.WriteLine("Failed!");
-				Console.WriteLine("+Error Description:");
+				Console.WriteLine("*** Error {0}:", theError.CopyleaksErrorCode);
 				Console.WriteLine("{0}", theError.Message);
 				Environment.Exit(1);
 			}
@@ -114,7 +191,7 @@ namespace Copyleaks.SDK.SampleCode
 				Environment.Exit(1);
 			}
 
-			Environment.Exit(0);
+			Environment.Exit(0); // SUCCESS
 		}
 	}
 }

@@ -3,10 +3,10 @@ using CommandLine.Text;
 
 namespace Copyleaks.SDK.SampleCode
 {
-    public class CommandLineOptions
+	public class CommandLineOptions
 	{
-		[Option('u', "username", Required = true, HelpText = "Copyleaks account username")]
-		public string Username { get; set; }
+		[Option('e', "email", Required = true, HelpText = "Copyleaks account email")]
+		public string Email { get; set; }
 
 		[Option('k', "key", Required = true, HelpText = "Copyleaks account API key")]
 		public string ApiKey { get; set; }

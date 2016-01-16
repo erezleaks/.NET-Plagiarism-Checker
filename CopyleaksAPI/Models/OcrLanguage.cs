@@ -23,18 +23,23 @@
 ********************************************************************************/
 
 using System;
-using System.Collections.Generic;
 
-namespace Copyleaks.SDK.API.Models.Responses
+namespace Copyleaks.SDK.API.Models
 {
-	public class ProcessInList
+	public class OcrLanguage
 	{
-		public Guid ProcessId { get; set; }
+		public string Name { get; private set; }
+		public eOcrLanguage Type { get; private set; }
 
-		public DateTime CreationTimeUTC { get; set; }
+		public OcrLanguage(eOcrLanguage language)
+		{
+			this.Type = language;
+			this.Name = language.ToString().Replace("_", " ");
+		}
 
-		public string Status { get; set; }
-
-		public Dictionary<string, string> CustomFields { get; set; }
+		public override string ToString()
+		{
+			return this.Name;
+		}
 	}
 }

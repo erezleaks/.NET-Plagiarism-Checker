@@ -24,17 +24,25 @@
 
 using System;
 using System.Collections.Generic;
-
-namespace Copyleaks.SDK.API.Models.Responses
+using System.Linq;
+namespace Copyleaks.SDK.API.Models
 {
-	public class ProcessInList
+	public static class OcrLanguages
 	{
-		public Guid ProcessId { get; set; }
+		private static List<OcrLanguage> SupportedLanguagesList { get; set; }
+		static OcrLanguages()
+		{
+			SupportedLanguagesList = new List<OcrLanguage>();
+			foreach (var value in Enum.GetValues(typeof(eOcrLanguage)).Cast<eOcrLanguage>())
+				SupportedLanguagesList.Add(new OcrLanguage(value));
+		}
 
-		public DateTime CreationTimeUTC { get; set; }
-
-		public string Status { get; set; }
-
-		public Dictionary<string, string> CustomFields { get; set; }
+		public static OcrLanguage[] SupportedLanguages
+		{
+			get
+			{
+				return SupportedLanguagesList.ToArray();
+			}
+		}
 	}
 }

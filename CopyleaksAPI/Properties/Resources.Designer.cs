@@ -61,7 +61,16 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 600000.
+        ///   Looks up a localized string similar to account.
+        /// </summary>
+        internal static string AccountPage {
+            get {
+                return ResourceManager.GetString("AccountPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 30000.
         /// </summary>
         internal static string RequestsTimeout {
             get {
@@ -70,11 +79,20 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://api.copyleaks.com.
+        ///   Looks up a localized string similar to https://api.copyleaks.com/.
         /// </summary>
         internal static string ServiceEntryPoint {
             get {
                 return ResourceManager.GetString("ServiceEntryPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to detector.
+        /// </summary>
+        internal static string ServicePage {
+            get {
+                return ResourceManager.GetString("ServicePage", resourceCulture);
             }
         }
         

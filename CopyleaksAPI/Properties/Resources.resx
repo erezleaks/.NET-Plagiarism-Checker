@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountPage" xml:space="preserve">
+    <value>account</value>
+  </data>
   <data name="RequestsTimeout" xml:space="preserve">
-    <value>600000</value>
-    <comment>In Milliseconds. Wait up to 10 minutes to response.</comment>
+    <value>30000</value>
+    <comment>In Milliseconds. Wait up to 30 seconds to response.</comment>
   </data>
   <data name="ServiceEntryPoint" xml:space="preserve">
-    <value>https://api.copyleaks.com</value>
+    <value>https://api.copyleaks.com/</value>
     <comment>Service URL</comment>
+  </data>
+  <data name="ServicePage" xml:space="preserve">
+    <value>detector</value>
   </data>
   <data name="ServiceVersion" xml:space="preserve">
     <value>v1</value>

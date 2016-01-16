@@ -22,19 +22,55 @@
  SOFTWARE.
 ********************************************************************************/
 
-using System;
-using System.Collections.Generic;
-
-namespace Copyleaks.SDK.API.Models.Responses
+namespace Copyleaks.SDK.API.Models
 {
-	public class ProcessInList
+	public enum eOcrLanguage
 	{
-		public Guid ProcessId { get; set; }
-
-		public DateTime CreationTimeUTC { get; set; }
-
-		public string Status { get; set; }
-
-		public Dictionary<string, string> CustomFields { get; set; }
+		Afrikaans,
+		Albanian,
+		Basque,
+		Brazilian,
+		Bulgarian,
+		Byelorussian,
+		Catalan,
+		Chinese_Simplified,
+		Chinese_Traditional,
+		Croatian,
+		Czech,
+		Danish,
+		Dutch,
+		English,
+		Esperanto,
+		Estonian,
+		Finnish,
+		French,
+		Galician,
+		German,
+		Greek,
+		Hungarian,
+		Icelandic,
+		Indonesian,
+		Italian,
+		Japanese,
+		Korean,
+		Latin,
+		Latvian,
+		Lithuanian,
+		Macedonian,
+		Malay,
+		Moldavian,
+		Norwegian,
+		Polish,
+		Portuguese,
+		Romanian,
+		Russian,
+		Serbian,
+		Slovak,
+		Slovenian,
+		Spanish,
+		Swedish,
+		Tagalog,
+		Turkish,
+		Ukrainian
 	}
 }

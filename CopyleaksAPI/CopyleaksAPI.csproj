@@ -41,8 +41,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CopyleaksAccount.cs" />
-    <Compile Include="Detector.cs" />
+    <Compile Include="CopyleaksCloud.cs" />
     <Compile Include="Extentions\TypesArrayExceptionExtention.cs" />
     <Compile Include="Helpers\Retry.cs" />
     <Compile Include="HttpContentTypes.cs" />
@@ -50,10 +49,13 @@
     <Compile Include="Exceptions\TokenExpiredException.cs" />
     <Compile Include="Extentions\AssemblyHelper.cs" />
     <Compile Include="Extentions\HttpClientHelper.cs" />
+    <Compile Include="Models\eOcrLanguage.cs" />
     <Compile Include="Models\LoginToken.cs" />
     <Compile Include="Models\LoginCredentials.cs" />
+    <Compile Include="Models\OcrLanguage.cs" />
+    <Compile Include="Models\OcrLanguages.cs" />
+    <Compile Include="Models\ProcessOptions.cs" />
     <Compile Include="Models\Requests\CreateCommandRequest.cs" />
-    <Compile Include="Models\Responses\BadLoginResponse.cs" />
     <Compile Include="Models\Responses\BadResponse.cs" />
     <Compile Include="Models\Responses\CheckStatusResponse.cs" />
     <Compile Include="Models\Responses\CountCreditsResponse.cs" />
