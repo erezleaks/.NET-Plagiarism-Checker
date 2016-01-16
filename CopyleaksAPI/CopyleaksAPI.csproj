@@ -101,6 +101,9 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetDir)*.dll" "$(ProjectDir)lib\"</PostBuildEvent>
