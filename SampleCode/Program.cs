@@ -37,9 +37,9 @@ namespace Copyleaks.SDK.SampleCode
 		static void Main(string[] args)
 		{
 			// Usage:
-			// SampleCode.exe -u "Your Account email address" -k "Your Account Key" --url "http://site.com/your-webpage"
+			// SampleCode.exe -e "<YOUR_EMAIL>" -k "Your Account Key" --url "http://site.com/your-webpage"
 			// OR 
-			// SampleCode.exe -u "Your Account email address" -k "Your Account Key" --local-document "C:\your-directory\document.doc"
+			// SampleCode.exe -e "<YOUR_EMAIL>" -k "Your Account Key" --local-document "C:\your-directory\document.doc"
 
 			CommandLineOptions options = new CommandLineOptions();
 			if (!CommandLine.Parser.Default.ParseArguments(args, options))
