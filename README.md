@@ -30,45 +30,80 @@ Install-Package CopyleaksAPI
 using System;
 using System.Threading;
 using Copyleaks.SDK.API;
-// ...
-
-private static void Scan(string username, string apiKey, string url)
+using Copyleaks.SDK.API.Exceptions;
+using Copyleaks.SDK.API.Models;
+//...
+private static void Scan(string email, string apiKey, string url)
 {
-    Console.Write("User login... ");
-    LoginToken token = UsersAuthentication.Login(username, apiKey);// Login to Copyleaks server. This security token can be use multiple times, untill it will be expired (14 days).
-    Console.WriteLine("\t\t\tSuccess!");
-
-
-    Console.Write("Submiting new request... ");
-    Detector detector = new Detector(token);
-    ScannerProcess process = detector.CreateByUrl(new Uri(url));// Create a new process on server.
-    Console.WriteLine("\tSuccess!");
-
-
-    Console.Write("Waiting for completion... ");
-        while (!process.IsCompleted())
-        Thread.Sleep(1000);// Waiting to process to be finished.
-    Console.WriteLine("\tSuccess!");
-
-
-    Console.Write("Getting results... ");
-        var results = process.GetResults();// Getting results.
-        if (results.Length == 0)
-    {
-        Console.WriteLine("\tNo results.");
-    }
-        else
-    {
-        for (int i = 0; i < results.Length; ++i)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Result {0}:", i + 1);
-            Console.WriteLine("Url: {0}", results[i].URL);
-            Console.WriteLine("Precents: {0}", results[i].Precents);
-            Console.WriteLine("CopiedWords: {0}", results[i].NumberOfCopiedWords);
-        }
-    }
-}
+	CopyleaksCloud copyleaks = new CopyleaksCloud();
+	CopyleaksProcess createdProcess;
+	ProcessOptions scanOptions = new ProcessOptions()
+	{
+		// SandboxMode = true // -------------------> Read more https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
+	};
+	try
+	{
+		#region Login to Copyleaks cloud
+		Console.Write("Login to Copyleaks cloud...");
+		copyleaks.Login(email, apiKey);
+		Console.WriteLine("Done!");
+		#endregion
+		#region Checking account balance
+		Console.Write("Checking account balance...");
+		uint creditsBalance = copyleaks.Credits;
+		Console.WriteLine("Done ({0} credits)!", creditsBalance);
+		if (creditsBalance == 0)
+		{
+			Console.WriteLine("ERROR: You do not have enough credits to complete this scan. Your current credit balance is {0}).", creditsBalance);
+			Environment.Exit(2);
+		}
+		#endregion
+		#region Submitting a new scan process to the server
+		Console.Write("Creating process...");
+		createdProcess = copyleaks.CreateByUrl(new Uri(url), scanOptions);
+		Console.WriteLine("Done (PID={0})!", createdProcess.PID);
+		#endregion
+		#region Waiting for server's process completion
+		Console.Write("Scanning... ");
+		ushort currentProgress;
+		while (!createdProcess.IsCompleted(out currentProgress))
+			Thread.Sleep(5000);
+		Console.WriteLine("Done.");
+		#endregion
+		#region Processing finished. Getting results
+		ResultRecord[] results = createdProcess.GetResults();
+		if (results.Length == 0)
+		{
+			Console.WriteLine("No results.");
+		}
+		else
+		{
+			for (int i = 0; i < results.Length; ++i)
+			{
+				Console.WriteLine();
+				Console.WriteLine("Result {0}:", i + 1);
+				Console.WriteLine("Url: {0}", results[i].URL);
+				Console.WriteLine("Percents: {0}", results[i].Percents);
+				Console.WriteLine("CopiedWords: {0}", results[i].NumberOfCopiedWords);
+			}
+		}
+		#endregion
+	}
+	catch (UnauthorizedAccessException)
+	{
+		Console.WriteLine("Failed!");
+		Console.WriteLine("Authentication with the server failed!");
+		Console.WriteLine("Possible reasons:");
+		Console.WriteLine("* You did not log in to Copyleaks cloud");
+		Console.WriteLine("* Your login token has expired");
+	}
+	catch (CommandFailedException theError)
+	{
+		Console.WriteLine("Failed!");
+		Console.WriteLine("*** Error {0}:", theError.CopyleaksErrorCode);
+		Console.WriteLine("{0}", theError.Message);
+	}
+}                
 </pre>
 <h3>Dependencies:</h3>
 <ul>
