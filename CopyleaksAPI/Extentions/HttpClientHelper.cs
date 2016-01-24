@@ -38,6 +38,9 @@ namespace Copyleaks.SDK.API.Extentions
 		internal static void SetCopyleaksClient(this HttpClient client, string contentType)
 		{
 			client.BaseAddress = new Uri(Resources.ServiceEntryPoint);
+
+			client.Timeout = TimeSpan.FromMilliseconds(int.Parse(Resources.RequestsTimeout));
+
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
 			client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Format("Copyleaks-.NET-SDK/{0}", ASSEMBLY_VERSION));
