@@ -22,7 +22,7 @@ Install-Package CopyleaksAPI
 </ol>
 <h3>Signing Up and Getting Your API Key</h3>
  <p>To use the Copyleaks API you need to be a registered user. Signing up is free of charge.</p>
- <p><a href="https://copyleaks.com/Account/Signup">Signup</a> to Copyleaks and confirm your account by clicking the link on the confirmation email. To get your API key, click your username in the upper right corner, which will lead you to the <i>‘Manage Account’</i> page. Press on <i>"Generate"</i> to get your own personal API key.</p>
+ <p><a href="https://copyleaks.com/Account/Register">Signup</a> to Copyleaks and confirm your account by clicking the link on the confirmation email. To get your API key, click your username in the upper right corner, which will lead you to the <i>‘Manage Account’</i> page. Press on <i>"Generate"</i> to get your own personal API key.</p>
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
 <h3>Example</h3>
 <p>This code will show you where the textual content in the parameter ‘url’ has been used online:</p>
