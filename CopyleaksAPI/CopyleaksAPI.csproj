@@ -51,7 +51,6 @@
     <Compile Include="Extentions\HttpClientHelper.cs" />
     <Compile Include="Models\eOcrLanguage.cs" />
     <Compile Include="Models\LoginToken.cs" />
-    <Compile Include="Models\LoginCredentials.cs" />
     <Compile Include="Models\OcrLanguage.cs" />
     <Compile Include="Models\OcrLanguages.cs" />
     <Compile Include="Models\ProcessOptions.cs" />

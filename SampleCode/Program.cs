@@ -64,19 +64,21 @@ namespace Copyleaks.SDK.SampleCode
 			}
 
 			// For more information, visit Copyleaks "How-To page": https://api.copyleaks.com/Guides/HowToUse
-			// Creating Copyleaks account: https://copyleaks.com/Account/Signup
+			// Creating Copyleaks account: https://copyleaks.com/Account/Register
 			// Use your Copyleaks account information.
-			// Generate your Account API Key: https://copyleaks.com/Account/Manage
+			// Generate your Account API Key: https://api.copyleaks.com/Home/Dashboard
 
 
 			CopyleaksCloud copyleaks = new CopyleaksCloud();
 			CopyleaksProcess createdProcess;
 			ResultRecord[] results;
-			ProcessOptions scanOptions = new ProcessOptions()
-			{
-				HttpCallback = httpCallback,
-				// SandboxMode = true // -------------------> Read more @ https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
-			};
+			ProcessOptions scanOptions = new ProcessOptions();
+			scanOptions.HttpCallback = httpCallback;
+
+			// For Sandbox scan you don't need credits. 
+			// Read more @ https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
+			// After you finish the integration with Copyleaks, remove this line.
+			scanOptions.SandboxMode = true;
 
 			try
 			{

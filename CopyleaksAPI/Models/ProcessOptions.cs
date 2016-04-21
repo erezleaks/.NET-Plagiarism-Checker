@@ -46,9 +46,9 @@ namespace Copyleaks.SDK.API.Models
 		public Dictionary<string, string> CustomFields { get; set; }
 
 		/// <summary>
-		///You can register a callback email to get informed when the request is completed. 
+		/// You can register a callback email to get informed when the request is completed. 
 		/// </summary>
-		public string EmailAddressCallback { get; set; }
+		public string EmailCallback { get; set; }
 
 		/// <summary>
 		/// Enable Sandbox mode for testing purposes  
@@ -76,8 +76,8 @@ namespace Copyleaks.SDK.API.Models
 						client.DefaultRequestHeaders.Add(CLIENT_CUSTOM_PREFIX + header.Key, header.Value);
 
 			const string EMAIL_CALLBACK = COPYLEAKS_HEADER_PREFIX + "email-callback";
-			if (this.EmailAddressCallback != null)
-				client.DefaultRequestHeaders.Add(EMAIL_CALLBACK, this.EmailAddressCallback);
+			if (this.EmailCallback != null)
+				client.DefaultRequestHeaders.Add(EMAIL_CALLBACK, this.EmailCallback);
 
 			const string SANDBOX_MODE_HEADER = COPYLEAKS_HEADER_PREFIX + "sandbox-mode";
 			if (this.SandboxMode)

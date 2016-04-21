@@ -70,7 +70,7 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 30000.
+        ///   Looks up a localized string similar to 60000.
         /// </summary>
         internal static string RequestsTimeout {
             get {

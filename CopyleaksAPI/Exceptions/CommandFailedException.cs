@@ -33,7 +33,7 @@ namespace Copyleaks.SDK.API.Exceptions
 {
 	public class CommandFailedException : ApplicationException
 	{
-		const short UNDEFINED_COPYLEAKS_ERROR_CODE = 9999;
+		const short UNDEFINED_COPYLEAKS_HEADER_ERROR_CODE = 9999;
 
 		public HttpStatusCode HttpErrorCode { get; private set; }
 
@@ -43,7 +43,7 @@ namespace Copyleaks.SDK.API.Exceptions
 		{
 			get
 			{
-				return CopyleaksErrorCode != UNDEFINED_COPYLEAKS_ERROR_CODE;
+				return CopyleaksErrorCode != UNDEFINED_COPYLEAKS_HEADER_ERROR_CODE;
 			}
 		}
 
@@ -51,7 +51,7 @@ namespace Copyleaks.SDK.API.Exceptions
 			base(GetMessage(response))
 		{
 			this.HttpErrorCode = response.StatusCode;
-			this.CopyleaksErrorCode = GetCopyleaksErrorCode(response);
+			this.CopyleaksErrorCode = parseCopyleaksErrorCode(response);
 		}
 
 		private static string GetMessage(HttpResponseMessage response)
@@ -66,7 +66,7 @@ namespace Copyleaks.SDK.API.Exceptions
 			}
 			catch (JsonReaderException)
 			{
-				if (GetCopyleaksErrorCode(response) != UNDEFINED_COPYLEAKS_ERROR_CODE)
+				if (parseCopyleaksErrorCode(response) != UNDEFINED_COPYLEAKS_HEADER_ERROR_CODE)
 					return errorResponse;
 			}
 
@@ -76,7 +76,7 @@ namespace Copyleaks.SDK.API.Exceptions
 				return error.Message;
 		}
 
-		private static short GetCopyleaksErrorCode(HttpResponseMessage response)
+		private static short parseCopyleaksErrorCode(HttpResponseMessage response)
 		{
 			const string COPYLEAKS_ERROR_CODE_HEADER_NAME = "Copyleaks-Error-Code";
 			if (response.Headers.Contains(COPYLEAKS_ERROR_CODE_HEADER_NAME))
@@ -86,7 +86,7 @@ namespace Copyleaks.SDK.API.Exceptions
 				if (values != null && values.Length > 0 && short.TryParse(values[0], out code))
 					return code;
 			}
-			return UNDEFINED_COPYLEAKS_ERROR_CODE;
+			return UNDEFINED_COPYLEAKS_HEADER_ERROR_CODE;
 		}
 	}
 }
