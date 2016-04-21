@@ -75,7 +75,7 @@ namespace Copyleaks.SDK.SampleCode
 			ProcessOptions scanOptions = new ProcessOptions();
 			scanOptions.HttpCallback = httpCallback;
 
-			// For Sandbox scan you don't need credits. 
+			// In Sandbox scan you don't need credits. 
 			// Read more @ https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
 			// After you finish the integration with Copyleaks, remove this line.
 			scanOptions.SandboxMode = true;
