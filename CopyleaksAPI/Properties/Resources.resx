@@ -129,7 +129,7 @@
     <comment>Service URL</comment>
   </data>
   <data name="ServicePage" xml:space="preserve">
-    <value>detector</value>
+    <value>publisher</value>
   </data>
   <data name="ServiceVersion" xml:space="preserve">
     <value>v1</value>

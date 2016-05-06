@@ -88,7 +88,7 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to detector.
+        ///   Looks up a localized string similar to publisher.
         /// </summary>
         internal static string ServicePage {
             get {
