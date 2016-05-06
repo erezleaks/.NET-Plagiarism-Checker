@@ -65,7 +65,7 @@ namespace Copyleaks.SDK.API
 
 		#endregion
 
-		internal CopyleaksProcess(LoginToken authorizationToken, ProcessInList rawProcess)
+		public CopyleaksProcess(LoginToken authorizationToken, ProcessInList rawProcess)
 		{
 			this.PID = rawProcess.ProcessId;
 			this.CreationTimeUtc = rawProcess.CreationTimeUTC;
@@ -74,7 +74,7 @@ namespace Copyleaks.SDK.API
 			this.ListProcesses_IsCompleted = rawProcess.Status.ToLower() == "finished";
 		}
 
-		internal CopyleaksProcess(LoginToken authorizationToken, CreateResourceResponse response, Dictionary<string, string> customFields)
+		public CopyleaksProcess(LoginToken authorizationToken, CreateResourceResponse response, Dictionary<string, string> customFields)
 		{
 			this.PID = response.ProcessId;
 			this.CreationTimeUtc = response.CreationTimeUTC;

@@ -53,7 +53,7 @@ namespace Copyleaks.SDK.API.Extentions
 
 			client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(Thread.CurrentThread.CurrentCulture.Name));
 		}
-		internal static void SetCopyleaksClient(this HttpClient client, string contentType, LoginToken SecurityToken)
+		public static void SetCopyleaksClient(this HttpClient client, string contentType, LoginToken SecurityToken)
 		{
 			client.SetCopyleaksClient(contentType);
 			client.DefaultRequestHeaders.Add("Authorization", string.Format("{0} {1}", "Bearer", SecurityToken.Token));
