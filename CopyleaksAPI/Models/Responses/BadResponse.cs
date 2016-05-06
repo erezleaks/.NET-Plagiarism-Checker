@@ -24,7 +24,7 @@
 
 namespace Copyleaks.SDK.API.Models.Responses
 {
-	internal class BadResponse
+	public class BadResponse
 	{
 		public string Message { get; set; }
 

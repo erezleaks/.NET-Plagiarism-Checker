@@ -34,7 +34,7 @@ namespace Copyleaks.SDK.API.Helpers
 	/// <summary>
 	/// Based on code from: http://stackoverflow.com/questions/1563191/c-sharp-cleanest-way-to-write-retry-logic
 	/// </summary>
-	internal static class Retry
+	public static class Retry
 	{
 		public static T Do<T>(Func<T> action, TimeSpan retryInterval, int retryCount = 3, params Type[] expectedExceptions)
 		{

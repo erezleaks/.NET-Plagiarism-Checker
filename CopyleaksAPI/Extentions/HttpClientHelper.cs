@@ -31,11 +31,11 @@ using Copyleaks.SDK.API.Properties;
 
 namespace Copyleaks.SDK.API.Extentions
 {
-	internal static class HttpClientHelper
+	public static class HttpClientHelper
 	{
 		static readonly string ASSEMBLY_VERSION = Assembly.GetExecutingAssembly().GetVersion();
 
-		internal static void SetCopyleaksClient(this HttpClient client, string contentType)
+		public static void SetCopyleaksClient(this HttpClient client, string contentType)
 		{
 			client.BaseAddress = new Uri(Resources.ServiceEntryPoint);
 

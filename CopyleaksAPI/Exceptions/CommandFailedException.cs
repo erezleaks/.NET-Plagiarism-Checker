@@ -47,7 +47,7 @@ namespace Copyleaks.SDK.API.Exceptions
 			}
 		}
 
-		internal CommandFailedException(HttpResponseMessage response) :
+		public CommandFailedException(HttpResponseMessage response) :
 			base(GetMessage(response))
 		{
 			this.HttpErrorCode = response.StatusCode;
