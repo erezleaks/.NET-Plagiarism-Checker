@@ -11,8 +11,8 @@ With Copyleaks SDK you can submit for scan:
 </ul>
 Instructions for using the SDK are below. For a quick example demonstrating the SDK capabilities just look at the code examples under “examples”.
 </p>
-<h3>Configuration</h3>
-<p>You can configure the Copyleaks SDK in one of two ways:</p>
+<h3>Integration</h3>
+<p>You can integrate with the Copyleaks SDK in one of two ways:</p>
 <ol>
 <li>Download the code from here, compile it and add reference to the assembly.</li>
 <li>Add <i>CopyleaksAPI</i> NuGet by running the following command in the <a href="http://docs.nuget.org/consume/package-manager-console">Package Manager Console</a></li>
@@ -21,8 +21,8 @@ Install-Package CopyleaksAPI
 </pre>
 </ol>
 <h3>Signing Up and Getting Your API Key</h3>
- <p>To use the Copyleaks API you need to be a registered user. Signing up is free of charge.</p>
- <p><a href="https://copyleaks.com/Account/Register">Signup</a> to Copyleaks and confirm your account by clicking the link on the confirmation email. To get your API key, click your username in the upper right corner, which will lead you to the <i>‘Manage Account’</i> page. Press on <i>"Generate"</i> to get your own personal API key.</p>
+ <p>To use the Copyleaks API you need to be a registered user. Signing up is quick and free of charge.</p>
+ <p><a href="https://copyleaks.com/Account/Register">Signup</a> to Copyleaks and confirm your account by clicking the link on the confirmation email. Generate your personal API key on your <a href="https://api.copyleaks.com/Home/Dashboard">dashboard</a> under 'Access Keys'.  
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
 <h3>Example</h3>
 <p>This code will show you where the textual content in the parameter ‘url’ has been used online:</p>
