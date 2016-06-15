@@ -7,6 +7,7 @@ With Copyleaks SDK you can submit for scan:
 <ul>
 <li>Webpages</li>
 <li>Local files (<a href="https://api.copyleaks.com/Documentation/TechnicalSpecifications/#non-textual-formats">see supported files</a>)</li>
+<li>Free text</li>
 <li>OCR (Optical Character Recognition) - scanning pictures containing textual content (<a href="https://api.copyleaks.com/Documentation/TechnicalSpecifications/#ocr-formats">see supported files</a>)</li>
 </ul>
 Instructions for using the SDK are below. For a quick example demonstrating the SDK capabilities just look at the code examples under “examples”.
