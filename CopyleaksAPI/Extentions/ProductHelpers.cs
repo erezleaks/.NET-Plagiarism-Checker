@@ -7,7 +7,7 @@ using Copyleaks.SDK.API.Properties;
 
 namespace Copyleaks.SDK.API.Extentions
 {
-	internal static class ProductHelpers
+	public static class ProductHelpers
 	{
 		public static string ToName(this eProduct product)
 		{
