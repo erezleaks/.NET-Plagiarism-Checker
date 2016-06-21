@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 
 namespace Copyleaks.SDK.API.Extentions
 {
-	public static class AssemblyHelper
+	internal static class AssemblyHelper
 	{
 		public static string GetVersion(this Assembly asm)
 		{

@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AcademicServicePage" xml:space="preserve">
+    <value>academic</value>
+  </data>
   <data name="AccountPage" xml:space="preserve">
     <value>account</value>
+  </data>
+  <data name="PublisherServicePage" xml:space="preserve">
+    <value>publisher</value>
   </data>
   <data name="RequestsTimeout" xml:space="preserve">
     <value>60000</value>
@@ -127,9 +133,6 @@
   <data name="ServiceEntryPoint" xml:space="preserve">
     <value>https://api.copyleaks.com/</value>
     <comment>Service URL</comment>
-  </data>
-  <data name="ServicePage" xml:space="preserve">
-    <value>publisher</value>
   </data>
   <data name="ServiceVersion" xml:space="preserve">
     <value>v1</value>

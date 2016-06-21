@@ -61,11 +61,29 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to academic.
+        /// </summary>
+        internal static string AcademicServicePage {
+            get {
+                return ResourceManager.GetString("AcademicServicePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to account.
         /// </summary>
         internal static string AccountPage {
             get {
                 return ResourceManager.GetString("AccountPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to publisher.
+        /// </summary>
+        internal static string PublisherServicePage {
+            get {
+                return ResourceManager.GetString("PublisherServicePage", resourceCulture);
             }
         }
         
@@ -84,15 +102,6 @@ namespace Copyleaks.SDK.API.Properties {
         internal static string ServiceEntryPoint {
             get {
                 return ResourceManager.GetString("ServiceEntryPoint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to publisher.
-        /// </summary>
-        internal static string ServicePage {
-            get {
-                return ResourceManager.GetString("ServicePage", resourceCulture);
             }
         }
         

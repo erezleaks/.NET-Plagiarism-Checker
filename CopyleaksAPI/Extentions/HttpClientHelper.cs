@@ -31,7 +31,7 @@ using Copyleaks.SDK.API.Properties;
 
 namespace Copyleaks.SDK.API.Extentions
 {
-	public static class HttpClientHelper
+	internal static class HttpClientHelper
 	{
 		static readonly string ASSEMBLY_VERSION = Assembly.GetExecutingAssembly().GetVersion();
 

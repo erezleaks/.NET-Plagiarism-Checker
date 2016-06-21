@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CopyleaksCloud.cs" />
+    <Compile Include="eProduct.cs" />
+    <Compile Include="Extentions\ProductHelpers.cs" />
     <Compile Include="Extentions\TypesArrayExceptionExtention.cs" />
     <Compile Include="Helpers\Retry.cs" />
     <Compile Include="HttpContentTypes.cs" />

@@ -45,6 +45,15 @@ namespace Copyleaks.SDK.API
 	/// </summary>
 	public class CopyleaksCloud
 	{
+		/// <summary>
+		/// Connection to Copyleaks cloud.
+		/// </summary>
+		/// <param name="product">The product for scanning the documents</param>
+		public CopyleaksCloud(eProduct product)
+		{
+			this.Product = product;
+		}
+
 		#region Members And Properties
 
 		private LoginToken _Token;
@@ -83,7 +92,7 @@ namespace Copyleaks.SDK.API
 				{
 					client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
 
-					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/count-credits", Resources.ServiceVersion, Resources.AccountPage)).Result;
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/count-credits", Resources.ServiceVersion, this.Product.ToName())).Result;
 					if (!msg.IsSuccessStatusCode)
 						throw new CommandFailedException(msg);
 
@@ -100,6 +109,7 @@ namespace Copyleaks.SDK.API
 				}
 			}
 		}
+		
 		/// <summary>
 		/// Get your active processes
 		/// </summary>
@@ -116,7 +126,7 @@ namespace Copyleaks.SDK.API
 				{
 					client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
 
-					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/list", Resources.ServiceVersion, Resources.ServicePage)).Result;
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/list", Resources.ServiceVersion, this.Product.ToName())).Result;
 					if (!msg.IsSuccessStatusCode)
 						throw new CommandFailedException(msg);
 
@@ -132,13 +142,18 @@ namespace Copyleaks.SDK.API
 
 					CopyleaksProcess[] processes = new CopyleaksProcess[rawProcesses.Length];
 					for (int i = 0; i < rawProcesses.Length; i++)
-						processes[i] = new CopyleaksProcess(this.Token, rawProcesses[i]);
+						processes[i] = new CopyleaksProcess(this.Token, this.Product, rawProcesses[i]);
 
 					processes = processes.OrderByDescending(proc => proc.CreationTimeUtc).ToArray();
 
 					return processes;
 				}
 			}
+		}
+
+		public eProduct Product
+		{
+			get; private set;
 		}
 
 		#endregion
@@ -189,7 +204,7 @@ namespace Copyleaks.SDK.API
 				if (options != null)
 					options.AddHeaders(client);
 
-				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Resources.ServiceVersion, Resources.ServicePage, "create-by-url"), content).Result;
+				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Resources.ServiceVersion, this.Product.ToName(), "create-by-url"), content).Result;
 
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
@@ -207,9 +222,9 @@ namespace Copyleaks.SDK.API
 					throw new Exception("JSON=" + json, e);
 				}
 				if (options == null)
-					return new CopyleaksProcess(this.Token, response, null);
+					return new CopyleaksProcess(this.Token, this.Product, response, null);
 				else
-					return new CopyleaksProcess(this.Token, response, options.CustomFields);
+					return new CopyleaksProcess(this.Token, this.Product, response, options.CustomFields);
 			}
 		}
 
@@ -246,7 +261,7 @@ namespace Copyleaks.SDK.API
 				using (FileStream stream = localfile.OpenRead())
 				{
 					content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(localfile.Name));
-					msg = client.PostAsync(string.Format("{0}/{1}/create-by-file", Resources.ServiceVersion, Resources.ServicePage), content).Result;
+					msg = client.PostAsync(string.Format("{0}/{1}/create-by-file", Resources.ServiceVersion, this.Product.ToName()), content).Result;
 				}
 
 				if (!msg.IsSuccessStatusCode)
@@ -256,9 +271,9 @@ namespace Copyleaks.SDK.API
 				var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
 				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json, dateTimeConverter);
 				if (options == null)
-					return new CopyleaksProcess(this.Token, response, null);
+					return new CopyleaksProcess(this.Token, this.Product, response, null);
 				else
-					return new CopyleaksProcess(this.Token, response, options.CustomFields);
+					return new CopyleaksProcess(this.Token, this.Product, response, options.CustomFields);
 			}
 		}
 
@@ -298,7 +313,7 @@ namespace Copyleaks.SDK.API
 				{
 					content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(localfile.Name));
 					msg = client.PostAsync(
-						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, Resources.ServicePage, Uri.EscapeDataString(language.Type.ToString())),
+						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(language.Type.ToString())),
 						content).Result;
 				}
 
@@ -310,9 +325,9 @@ namespace Copyleaks.SDK.API
 				var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
 				CreateResourceResponse response = JsonConvert.DeserializeObject<CreateResourceResponse>(json, dateTimeConverter);
 				if (options == null)
-					return new CopyleaksProcess(this.Token, response, null);
+					return new CopyleaksProcess(this.Token, this.Product, response, null);
 				else
-					return new CopyleaksProcess(this.Token, response, options.CustomFields);
+					return new CopyleaksProcess(this.Token, this.Product, response, options.CustomFields);
 			}
 		}
 	}

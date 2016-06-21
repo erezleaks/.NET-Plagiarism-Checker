@@ -25,9 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Copyleaks.SDK.API.Exceptions;
 using Copyleaks.SDK.API.Extentions;
 using Copyleaks.SDK.API.Helpers;
@@ -63,23 +61,27 @@ namespace Copyleaks.SDK.API
 
 		private bool ListProcesses_IsCompleted { get; set; } = false;
 
+		public eProduct Product { get; private set; }
+
 		#endregion
 
-		public CopyleaksProcess(LoginToken authorizationToken, ProcessInList rawProcess)
+		public CopyleaksProcess(LoginToken authorizationToken, eProduct product, ProcessInList rawProcess)
 		{
 			this.PID = rawProcess.ProcessId;
 			this.CreationTimeUtc = rawProcess.CreationTimeUTC;
 			this.SecurityToken = authorizationToken;
 			this.CustomFields = rawProcess.CustomFields;
 			this.ListProcesses_IsCompleted = rawProcess.Status.ToLower() == "finished";
+			this.Product = product;
 		}
 
-		public CopyleaksProcess(LoginToken authorizationToken, CreateResourceResponse response, Dictionary<string, string> customFields)
+		public CopyleaksProcess(LoginToken authorizationToken, eProduct product, CreateResourceResponse response, Dictionary<string, string> customFields)
 		{
 			this.PID = response.ProcessId;
 			this.CreationTimeUtc = response.CreationTimeUTC;
 			this.SecurityToken = authorizationToken;
 			this.CustomFields = customFields;
+			this.Product = product;
 		}
 
 		/// <summary>
@@ -103,7 +105,7 @@ namespace Copyleaks.SDK.API
 
 				HttpResponseMessage msg;
 				msg = Retry.Http<HttpResponseMessage>(
-					() => client.GetAsync(string.Format("{0}/{1}/{2}/status", Resources.ServiceVersion, Resources.ServicePage, this.PID)).Result,
+					() => client.GetAsync(string.Format("{0}/{1}/{2}/status", Resources.ServiceVersion, this.Product.ToName(), this.PID)).Result,
 					TimeSpan.FromSeconds(3),
 					3);
 
@@ -132,7 +134,7 @@ namespace Copyleaks.SDK.API
 			{
 				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
 
-				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/{2}/result", Resources.ServiceVersion, Resources.ServicePage, this.PID)).Result;
+				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/{2}/result", Resources.ServiceVersion, this.Product.ToName(), this.PID)).Result;
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
 
@@ -155,7 +157,7 @@ namespace Copyleaks.SDK.API
 			{
 				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
 
-				HttpResponseMessage msg = client.DeleteAsync(string.Format("{0}/{1}/{2}/delete", Resources.ServiceVersion, Resources.ServicePage, this.PID)).Result;
+				HttpResponseMessage msg = client.DeleteAsync(string.Format("{0}/{1}/{2}/delete", Resources.ServiceVersion, this.Product.ToName(), this.PID)).Result;
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
 			}

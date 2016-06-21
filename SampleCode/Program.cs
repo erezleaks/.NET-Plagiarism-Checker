@@ -68,8 +68,9 @@ namespace Copyleaks.SDK.SampleCode
 			// Use your Copyleaks account information.
 			// Generate your Account API Key: https://api.copyleaks.com/Home/Dashboard
 
-
-			CopyleaksCloud copyleaks = new CopyleaksCloud();
+			// Copyleaks api supports two products: Publishers and Academic. 
+			// Select the product the suitible for you.
+			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Publishers);
 			CopyleaksProcess createdProcess;
 			ResultRecord[] results;
 			ProcessOptions scanOptions = new ProcessOptions();
