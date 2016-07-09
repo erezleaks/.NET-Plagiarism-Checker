@@ -5,7 +5,7 @@
 		/// <summary>
 		/// Bests for: publishers, blogger, writers...
 		/// </summary>
-		Publishers,
+		Businesses,
 		/// <summary>
 		/// Bests for academic purposes.
 		/// </summary>

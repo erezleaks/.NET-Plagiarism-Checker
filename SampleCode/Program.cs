@@ -70,7 +70,7 @@ namespace Copyleaks.SDK.SampleCode
 
 			// Copyleaks api supports two products: Publishers and Academic. 
 			// Select the product the suitible for you.
-			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Publishers);
+			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Businesses);
 			CopyleaksProcess createdProcess;
 			ResultRecord[] results;
 			ProcessOptions scanOptions = new ProcessOptions();

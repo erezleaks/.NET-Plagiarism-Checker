@@ -13,8 +13,8 @@ namespace Copyleaks.SDK.API.Extentions
 		{
 			switch (product)
 			{
-				case eProduct.Publishers:
-					return Resources.PublisherServicePage;
+				case eProduct.Businesses:
+					return Resources.BusinessesServicePage;
 				case eProduct.Academic:
 					return Resources.AcademicServicePage;
 				default:

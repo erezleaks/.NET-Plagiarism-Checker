@@ -79,11 +79,11 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to publisher.
+        ///   Looks up a localized string similar to businesses.
         /// </summary>
-        internal static string PublisherServicePage {
+        internal static string BusinessesServicePage {
             get {
-                return ResourceManager.GetString("PublisherServicePage", resourceCulture);
+                return ResourceManager.GetString("BusinessesServicePage", resourceCulture);
             }
         }
         
@@ -97,7 +97,7 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://api.copyleaks.com/.
+        ///   Looks up a localized string similar to https://api.copyleaks.com.
         /// </summary>
         internal static string ServiceEntryPoint {
             get {
