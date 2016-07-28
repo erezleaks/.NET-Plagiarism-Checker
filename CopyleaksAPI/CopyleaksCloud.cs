@@ -109,7 +109,7 @@ namespace Copyleaks.SDK.API
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Get your active processes
 		/// </summary>
@@ -281,11 +281,15 @@ namespace Copyleaks.SDK.API
 		/// Submitting picture, containing textual content, to plagiarism scan
 		/// </summary>
 		/// <param name="localfile">The local picture containing the content to scan</param>
-		/// <param name="language">Specify the language of the text</param>
+		/// <param name="ocrLanguageId">
+		///		Specify the language id of the text. Retrive supported languages by calling the 
+		///		method "CopyleaksCloud.SupportedOcrLanguages". Only valid language id will be accepted by the server
+		///		Full supported languages list: https://api.copyleaks.com/GeneralDocumentation/OcrLanguages/
+		/// </param>
 		/// <param name="options">Process Options: include http callback and add custom fields to the process</param>
 		/// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
 		/// <returns>The newly created process</returns>
-		public CopyleaksProcess CreateByOcr(FileInfo localfile, OcrLanguage language, ProcessOptions options = null)
+		public CopyleaksProcess CreateByOcr(FileInfo localfile, string ocrLanguageId, ProcessOptions options = null)
 		{
 			if (this.Token == null)
 				throw new UnauthorizedAccessException("Empty token!");
@@ -295,8 +299,8 @@ namespace Copyleaks.SDK.API
 			if (!localfile.Exists)
 				throw new FileNotFoundException("File not found!", localfile.FullName);
 
-			if (language == null)
-				throw new ArgumentNullException(nameof(language), "Cannot be null!");
+			if (string.IsNullOrEmpty(ocrLanguageId))
+				throw new ArgumentNullException(nameof(ocrLanguageId), "Cannot be null or empty!");
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -313,7 +317,7 @@ namespace Copyleaks.SDK.API
 				{
 					content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(localfile.Name));
 					msg = client.PostAsync(
-						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(language.Type.ToString())),
+						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(ocrLanguageId)),
 						content).Result;
 				}
 
@@ -328,6 +332,56 @@ namespace Copyleaks.SDK.API
 					return new CopyleaksProcess(this.Token, this.Product, response, null);
 				else
 					return new CopyleaksProcess(this.Token, this.Product, response, options.CustomFields);
+			}
+		}
+
+		/// <summary>
+		/// Get a list of supported languages for OCR scanning.
+		/// </summary>
+		public static OcrLanguage[] SupportedOcrLanguages
+		{
+			get
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.SetCopyleaksClient(HttpContentTypes.Json);
+
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/ocr-languages-list", Resources.ServiceVersion, Resources.MiscellaneousServicePage)).Result;
+					if (!msg.IsSuccessStatusCode)
+						throw new CommandFailedException(msg);
+
+					string json = msg.Content.ReadAsStringAsync().Result;
+
+					if (string.IsNullOrEmpty(json))
+						throw new JsonException("This request could not be processed.");
+
+					return JsonConvert.DeserializeObject<OcrLanguage[]>(json);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get a list of supported file types for uploading to the server. 
+		/// </summary>
+		public static SupportedFileTypes SupportedFileTypes
+		{
+			get
+			{
+				using (HttpClient client = new HttpClient())
+				{
+					client.SetCopyleaksClient(HttpContentTypes.Json);
+
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/supported-file-types", Resources.ServiceVersion, Resources.MiscellaneousServicePage)).Result;
+					if (!msg.IsSuccessStatusCode)
+						throw new CommandFailedException(msg);
+
+					string json = msg.Content.ReadAsStringAsync().Result;
+
+					if (string.IsNullOrEmpty(json))
+						throw new JsonException("This request could not be processed.");
+
+					return JsonConvert.DeserializeObject<SupportedFileTypes>(json);
+				}
 			}
 		}
 	}

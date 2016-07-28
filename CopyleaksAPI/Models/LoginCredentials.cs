@@ -22,27 +22,20 @@
  SOFTWARE.
 ********************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 namespace Copyleaks.SDK.API.Models
 {
-	public static class OcrLanguages
+	/// <summary>
+	/// Login credentials
+	/// </summary>
+	class LoginCredentials
 	{
-		private static List<OcrLanguage> SupportedLanguagesList { get; set; }
-		static OcrLanguages()
-		{
-			SupportedLanguagesList = new List<OcrLanguage>();
-			foreach (var value in Enum.GetValues(typeof(eOcrLanguage)).Cast<eOcrLanguage>())
-				SupportedLanguagesList.Add(new OcrLanguage(value));
-		}
-
-		public static OcrLanguage[] SupportedLanguages
-		{
-			get
-			{
-				return SupportedLanguagesList.ToArray();
-			}
-		}
+		/// <summary>
+		/// Username
+		/// </summary>
+		public string Username { get; set; }
+		/// <summary>
+		/// Password
+		/// </summary>
+		public string Password { get; set; }
 	}
 }

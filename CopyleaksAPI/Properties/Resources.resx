@@ -126,6 +126,9 @@
   <data name="BusinessesServicePage" xml:space="preserve">
     <value>businesses</value>
   </data>
+  <data name="MiscellaneousServicePage" xml:space="preserve">
+    <value>miscellaneous</value>
+  </data>
   <data name="RequestsTimeout" xml:space="preserve">
     <value>60000</value>
     <comment>In Milliseconds. Wait up to 60 seconds to response.</comment>

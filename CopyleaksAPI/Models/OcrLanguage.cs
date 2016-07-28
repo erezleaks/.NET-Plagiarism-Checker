@@ -28,14 +28,8 @@ namespace Copyleaks.SDK.API.Models
 {
 	public class OcrLanguage
 	{
-		public string Name { get; private set; }
-		public eOcrLanguage Type { get; private set; }
-
-		public OcrLanguage(eOcrLanguage language)
-		{
-			this.Type = language;
-			this.Name = language.ToString().Replace("_", " ");
-		}
+		public string Name { get; set; }
+		public string ID { get; set; }
 
 		public override string ToString()
 		{

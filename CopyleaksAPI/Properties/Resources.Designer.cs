@@ -88,6 +88,15 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to miscellaneous.
+        /// </summary>
+        internal static string MiscellaneousServicePage {
+            get {
+                return ResourceManager.GetString("MiscellaneousServicePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 60000.
         /// </summary>
         internal static string RequestsTimeout {
