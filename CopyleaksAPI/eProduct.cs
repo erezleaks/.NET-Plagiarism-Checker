@@ -9,6 +9,10 @@
 		/// <summary>
 		/// Bests for academic purposes.
 		/// </summary>
-		Academic
+		Academic,
+		/// <summary>
+		/// Bests for scanning random HTML URLs.
+		/// </summary>
+		Websites
 	}
 }

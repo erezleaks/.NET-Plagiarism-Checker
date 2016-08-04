@@ -134,11 +134,14 @@
     <comment>In Milliseconds. Wait up to 60 seconds to response.</comment>
   </data>
   <data name="ServiceEntryPoint" xml:space="preserve">
-    <value>https://api.copyleaks.com</value>
+    <value>https://api.copyleaks.com/</value>
     <comment>Service URL</comment>
   </data>
   <data name="ServiceVersion" xml:space="preserve">
     <value>v1</value>
     <comment>Current version of the API</comment>
+  </data>
+  <data name="WebsitesServicePage" xml:space="preserve">
+    <value>websites</value>
   </data>
 </root>

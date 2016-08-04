@@ -134,6 +134,8 @@ namespace Copyleaks.SDK.SampleCode
 
 				#region Waiting for server's process completion
 
+				// Note: We are strongly recommending to use "callbacks" instead of "busy-polling". Use HTTP-callbacks whenever it's possible.
+				// Read more @ https://api.copyleaks.com/GeneralDocumentation/RequestHeaders#http-callbacks
 				Console.Write("Scanning... ");
 				using (var progress = new ProgressBar())
 				{

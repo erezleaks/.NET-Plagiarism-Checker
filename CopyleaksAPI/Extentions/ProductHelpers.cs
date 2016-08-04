@@ -17,6 +17,8 @@ namespace Copyleaks.SDK.API.Extentions
 					return Resources.BusinessesServicePage;
 				case eProduct.Academic:
 					return Resources.AcademicServicePage;
+				case eProduct.Websites:
+					return Resources.WebsitesServicePage;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
