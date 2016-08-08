@@ -43,7 +43,7 @@ namespace Copyleaks.SDK.API.Models
 		/// Add your own custom fields to your requests. 
 		/// You can store any kind of information which will be later available under 'CopyleaksCloud.Processes'. 
 		/// </summary>
-		public Dictionary<string, string> CustomFields { get; set; }
+		public Dictionary<string, string> CustomFields { get; set; } = new Dictionary<string, string>();
 
 		/// <summary>
 		/// You can register a callback email to get informed when the request is completed. 
