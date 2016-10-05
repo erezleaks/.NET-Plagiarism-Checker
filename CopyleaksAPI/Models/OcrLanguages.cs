@@ -22,13 +22,27 @@
  SOFTWARE.
 ********************************************************************************/
 
-namespace Copyleaks.SDK.API
+using System;
+using System.Collections.Generic;
+using System.Linq;
+namespace Copyleaks.SDK.API.Models
 {
-	public static class HttpContentTypes
+	public static class OcrLanguages
 	{
-		public static readonly string Json = "application/json";
-		public static readonly string Xml = "application/xml";
-		public static readonly string UrlEncoded = "application/x-www-form-urlencoded";
-		public static readonly string PlainText = "text/plain";
+		private static List<OcrLanguage> SupportedLanguagesList { get; set; }
+		static OcrLanguages()
+		{
+			SupportedLanguagesList = new List<OcrLanguage>();
+			foreach (var value in Enum.GetValues(typeof(eOcrLanguage)).Cast<eOcrLanguage>())
+				SupportedLanguagesList.Add(new OcrLanguage(value));
+		}
+
+		public static OcrLanguage[] SupportedLanguages
+		{
+			get
+			{
+				return SupportedLanguagesList.ToArray();
+			}
+		}
 	}
 }

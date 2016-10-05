@@ -336,6 +336,58 @@ namespace Copyleaks.SDK.API
 		}
 
 		/// <summary>
+		/// Submitting text to plagiarism scan
+		/// </summary>
+		/// <param name="text">Text to be scanned. The text MUST be encoded with UTF-8.</param>
+		/// <param name="options">Process Options: include http callback and add custom fields to the process</param>
+		/// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
+		/// <exception cref="ArgumentOutOfRangeException">The input URL scheme is different than HTTP or HTTPS</exception>
+		/// <returns>The newly created process</returns>
+		public CopyleaksProcess CreateByText(string text, ProcessOptions options = null)
+		{
+			if (this.Token == null)
+				throw new UnauthorizedAccessException("Empty token!");
+			else
+				this.Token.Validate();
+
+			if (text.Trim() == "")
+				throw new ArgumentOutOfRangeException(nameof(text), "Empty text not allowed.");
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
+
+				HttpResponseMessage msg;
+				HttpContent content = new StringContent(text, Encoding.UTF8, HttpContentTypes.PlainText);
+
+				if (options != null)
+					options.AddHeaders(client);
+
+				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Resources.ServiceVersion, this.Product.ToName(), "create-by-text"), content).Result;
+
+				if (!msg.IsSuccessStatusCode)
+					throw new CommandFailedException(msg);
+
+				string json = msg.Content.ReadAsStringAsync().Result;
+
+				CreateResourceResponse response;
+				try
+				{
+					var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
+					response = JsonConvert.DeserializeObject<CreateResourceResponse>(json, dateTimeConverter);
+				}
+				catch (Exception e)
+				{
+					throw new Exception("JSON=" + json, e);
+				}
+				if (options == null)
+					return new CopyleaksProcess(this.Token, this.Product, response, null);
+				else
+					return new CopyleaksProcess(this.Token, this.Product, response, options.CustomFields);
+			}
+		}
+
+		/// <summary>
 		/// Get a list of supported languages for OCR scanning.
 		/// </summary>
 		public static OcrLanguage[] SupportedOcrLanguages

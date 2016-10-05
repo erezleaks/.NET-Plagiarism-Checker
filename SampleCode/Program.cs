@@ -116,7 +116,8 @@ namespace Copyleaks.SDK.SampleCode
 						Environment.Exit(1);
 					}
 
-					createdProcess = copyleaks.CreateByUrl(uri, scanOptions);
+					//createdProcess = copyleaks.CreateByUrl(uri, scanOptions);
+					createdProcess = copyleaks.CreateByText("Hello World", scanOptions);
 				}
 				else
 				{

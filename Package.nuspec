@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Copyleaks API</id>
+    <version>2.0.1</version>
+    <authors>Copyleaks</authors>
+    <owners>Copyleaks</owners>
+    <licenseUrl>https://copyleaks.com/Legal/TermsOfUse</licenseUrl>
+    <projectUrl>https://github.com/Copyleaks/API/tree/master/CopyleaksAPI</projectUrl>
+    <iconUrl>https://copyleaks.com/images/nuget/copyleaks-icon-32.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Copyleaks is a popular advanced online plagiarism checker. This library provides access to Copyleaks cloud and scans your content for copyright infringement.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>All rights reserved to Copyleaks Ltd.</copyright>
+    <tags>plagiarism copyright copyrights Copyleaks infringement checker detector</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>

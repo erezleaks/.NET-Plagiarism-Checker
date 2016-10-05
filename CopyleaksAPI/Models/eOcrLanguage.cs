@@ -22,13 +22,55 @@
  SOFTWARE.
 ********************************************************************************/
 
-namespace Copyleaks.SDK.API
+namespace Copyleaks.SDK.API.Models
 {
-	public static class HttpContentTypes
+	public enum eOcrLanguage
 	{
-		public static readonly string Json = "application/json";
-		public static readonly string Xml = "application/xml";
-		public static readonly string UrlEncoded = "application/x-www-form-urlencoded";
-		public static readonly string PlainText = "text/plain";
+		Afrikaans,
+		Albanian,
+		Basque,
+		Brazilian,
+		Bulgarian,
+		Byelorussian,
+		Catalan,
+		Chinese_Simplified,
+		Chinese_Traditional,
+		Croatian,
+		Czech,
+		Danish,
+		Dutch,
+		English,
+		Esperanto,
+		Estonian,
+		Finnish,
+		French,
+		Galician,
+		German,
+		Greek,
+		Hungarian,
+		Icelandic,
+		Indonesian,
+		Italian,
+		Japanese,
+		Korean,
+		Latin,
+		Latvian,
+		Lithuanian,
+		Macedonian,
+		Malay,
+		Moldavian,
+		Norwegian,
+		Polish,
+		Portuguese,
+		Romanian,
+		Russian,
+		Serbian,
+		Slovak,
+		Slovenian,
+		Spanish,
+		Swedish,
+		Tagalog,
+		Turkish,
+		Ukrainian
 	}
 }
