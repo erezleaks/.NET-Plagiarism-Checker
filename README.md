@@ -6,9 +6,9 @@ Copyleaks SDK is a simple framework that allows you to perform plagiarism scans 
 With Copyleaks SDK you can submit for scan:  
 <ul>
 <li>Webpages</li>
-<li>Local files (<a href="https://api.copyleaks.com/Documentation/TechnicalSpecifications/#non-textual-formats">see supported files</a>)</li>
+<li>Local files - pdf, doc, docx, rtf and more <a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">(see full list)</a></li>
 <li>Free text</li>
-<li>OCR (Optical Character Recognition) - scanning pictures containing textual content (<a href="https://api.copyleaks.com/Documentation/TechnicalSpecifications/#ocr-formats">see supported files</a>)</li>
+<li>OCR (Optical Character Recognition) - scanning pictures containing textual content <a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">(see full list)</a></li>
 </ul>
 Instructions for using the SDK are below. For a quick example demonstrating the SDK capabilities just look at the code examples under “examples”.
 </p>
@@ -23,7 +23,7 @@ Install-Package CopyleaksAPI
 </ol>
 <h3>Signing Up and Getting Your API Key</h3>
  <p>To use the Copyleaks API you need to be a registered user. Signing up is quick and free of charge.</p>
- <p><a href="https://copyleaks.com/Account/Register">Signup</a> to Copyleaks and confirm your account by clicking the link on the confirmation email. Generate your personal API key on your <a href="https://api.copyleaks.com/Home/Dashboard">dashboard</a> under 'Access Keys'.</p>  
+ <p><a href="https://copyleaks.com/Account/Register">Signup</a> to Copyleaks and confirm your account by clicking the link on the confirmation email. Generate your personal API key on your dashboard (<a href="https://api.copyleaks.com/businessesapi">Businesses dashboard/</a><a href="https://api.copyleaks.com/academicapi">Academic dashboard/</a><a href="https://api.copyleaks.com/websitesapi">Websites dashboard</a>) under 'Access Keys'. </p>
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
 <h3>Example</h3>
 <p>This code will show you where the textual content in the parameter ‘url’ has been used online:</p>
