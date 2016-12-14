@@ -40,6 +40,11 @@ namespace Copyleaks.SDK.API.Models
 		public Uri HttpCallback { get; set; }
 
 		/// <summary>
+		/// Notify you about new results exactly on the time the server found them.
+		/// </summary>
+		public Uri InProgressResultsCallback { get; set; }
+
+		/// <summary>
 		/// Add your own custom fields to your requests. 
 		/// You can store any kind of information which will be later available under 'CopyleaksCloud.Processes'. 
 		/// </summary>
@@ -64,8 +69,13 @@ namespace Copyleaks.SDK.API.Models
 		{
 			if (this.HttpCallback != null)
 				client.DefaultRequestHeaders.Add(
-					COPYLEAKS_HEADER_PREFIX + "http-callback",
+					COPYLEAKS_HEADER_PREFIX + "http-completion-callback",
 					this.HttpCallback.AbsoluteUri); // Add HTTP callback to the request header.
+
+			if (this.InProgressResultsCallback != null)
+				client.DefaultRequestHeaders.Add(
+					COPYLEAKS_HEADER_PREFIX + "in-progress-new-result",
+					this.InProgressResultsCallback.AbsoluteUri); // Add HTTP callback to the request header.
 
 			const string CLIENT_CUSTOM_PREFIX = COPYLEAKS_HEADER_PREFIX + "client-custom-";
 			if (this.CustomFields != null)

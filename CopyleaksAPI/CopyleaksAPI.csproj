@@ -52,7 +52,6 @@
     <Compile Include="Extentions\AssemblyHelper.cs" />
     <Compile Include="Extentions\HttpClientHelper.cs" />
     <Compile Include="Models\LoginToken.cs" />
-    <Compile Include="Models\OcrLanguage.cs" />
     <Compile Include="Models\ProcessOptions.cs" />
     <Compile Include="Models\Requests\CreateCommandRequest.cs" />
     <Compile Include="Models\Responses\BadResponse.cs" />

@@ -22,19 +22,36 @@
  SOFTWARE.
 ********************************************************************************/
 
+using System;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace Copyleaks.SDK.API.Models
 {
 	public class ResultRecord
 	{
-		[JsonProperty(PropertyName = "URL")]
-		public string URL { get; private set; }
+		[JsonProperty("URL")]
+		public Uri URL { get; private set; }
 
-		[JsonProperty(PropertyName = "Percents")]
+		[JsonProperty("Percents")]
 		public int Percents { get; private set; }
 
-		[JsonProperty(PropertyName = "NumberOfCopiedWords")]
+		[JsonProperty("NumberOfCopiedWords")]
 		public int NumberOfCopiedWords { get; set; }
+
+		[JsonProperty("ComparisonReport")]
+		public Uri ComparisonReport { get; set; }
+
+		[JsonProperty("CachedVersion")]
+		public Uri CachedVersion { get; set; }
+
+		[JsonProperty("Title")]
+		public string Title { get; set; }
+
+		[JsonProperty("Introduction")]
+		public string Introduction { get; set; }
+
+		[JsonProperty("EmbededComparison")]
+		public Uri EmbededComparison { get; set; }
 	}
 }

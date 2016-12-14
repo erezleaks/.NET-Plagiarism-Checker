@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using Copyleaks.SDK.API.Exceptions;
@@ -143,6 +144,38 @@ namespace Copyleaks.SDK.API
 			ResultRecord[] results = JsonConvert.DeserializeObject<ResultRecord[]>(json);
 			results = results.OrderByDescending(result => result.Percents).ToArray();
 			return results;
+		}
+
+		public Stream DownloadSourceText()
+		{
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
+
+				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/downloads/source-text?pid={1}", Resources.ServiceVersion, this.PID)).Result;
+				if (!msg.IsSuccessStatusCode)
+					throw new CommandFailedException(msg);
+
+				return msg.Content.ReadAsStreamAsync().Result;
+			}
+		}
+
+		public Stream DownloadResultText(ResultRecord result)
+		{
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
+
+			using (HttpClient client = new HttpClient())
+			{
+				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
+
+				HttpResponseMessage msg = client.GetAsync(result.CachedVersion).Result;
+				if (!msg.IsSuccessStatusCode)
+					throw new CommandFailedException(msg);
+
+				return msg.Content.ReadAsStreamAsync().Result;
+			}
 		}
 
 		/// <summary>

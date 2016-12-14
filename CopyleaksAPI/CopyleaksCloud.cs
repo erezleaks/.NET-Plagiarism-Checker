@@ -281,7 +281,7 @@ namespace Copyleaks.SDK.API
 		/// Submitting picture, containing textual content, to plagiarism scan
 		/// </summary>
 		/// <param name="localfile">The local picture containing the content to scan</param>
-		/// <param name="ocrLanguageId">
+		/// <param name="ocrLanguage">
 		///		Specify the language id of the text. Retrive supported languages by calling the 
 		///		method "CopyleaksCloud.SupportedOcrLanguages". Only valid language id will be accepted by the server
 		///		Full supported languages list: https://api.copyleaks.com/GeneralDocumentation/OcrLanguages/
@@ -289,7 +289,7 @@ namespace Copyleaks.SDK.API
 		/// <param name="options">Process Options: include http callback and add custom fields to the process</param>
 		/// <exception cref="UnauthorizedAccessException">The login-token is undefined or expired</exception>
 		/// <returns>The newly created process</returns>
-		public CopyleaksProcess CreateByOcr(FileInfo localfile, string ocrLanguageId, ProcessOptions options = null)
+		public CopyleaksProcess CreateByOcr(FileInfo localfile, string ocrLanguage, ProcessOptions options = null)
 		{
 			if (this.Token == null)
 				throw new UnauthorizedAccessException("Empty token!");
@@ -299,8 +299,8 @@ namespace Copyleaks.SDK.API
 			if (!localfile.Exists)
 				throw new FileNotFoundException("File not found!", localfile.FullName);
 
-			if (string.IsNullOrEmpty(ocrLanguageId))
-				throw new ArgumentNullException(nameof(ocrLanguageId), "Cannot be null or empty!");
+			if (string.IsNullOrEmpty(ocrLanguage))
+				throw new ArgumentNullException(nameof(ocrLanguage), "Cannot be null or empty!");
 
 			using (HttpClient client = new HttpClient())
 			{
@@ -317,7 +317,7 @@ namespace Copyleaks.SDK.API
 				{
 					content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(localfile.Name));
 					msg = client.PostAsync(
-						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(ocrLanguageId)),
+						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(ocrLanguage)),
 						content).Result;
 				}
 
@@ -390,7 +390,7 @@ namespace Copyleaks.SDK.API
 		/// <summary>
 		/// Get a list of supported languages for OCR scanning.
 		/// </summary>
-		public static OcrLanguage[] SupportedOcrLanguages
+		public static string[] SupportedOcrLanguages
 		{
 			get
 			{
@@ -407,7 +407,7 @@ namespace Copyleaks.SDK.API
 					if (string.IsNullOrEmpty(json))
 						throw new JsonException("This request could not be processed.");
 
-					return JsonConvert.DeserializeObject<OcrLanguage[]>(json);
+					return JsonConvert.DeserializeObject<string[]>(json);
 				}
 			}
 		}

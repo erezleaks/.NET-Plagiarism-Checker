@@ -24,6 +24,8 @@
 
 using System;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading;
 using Copyleaks.SDK.API;
 using Copyleaks.SDK.API.Exceptions;
@@ -68,7 +70,7 @@ namespace Copyleaks.SDK.SampleCode
 			// Use your Copyleaks account information.
 			// Generate your Account API Key: https://api.copyleaks.com/Home/Dashboard
 
-			// Copyleaks api supports two products: Publishers and Academic. 
+			// Copyleaks api supports two products: Businesses and Academic. 
 			// Select the product the suitible for you.
 			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Businesses);
 			CopyleaksProcess createdProcess;
@@ -163,12 +165,40 @@ namespace Copyleaks.SDK.SampleCode
 					for (int i = 0; i < results.Length; ++i)
 					{
 						Console.WriteLine();
-						Console.WriteLine("Result {0}:", i + 1);
+						Console.WriteLine("------------------------------------------------");
 						Console.WriteLine("Url: {0}", results[i].URL);
-						Console.WriteLine("Percents: {0}", results[i].Percents);
-						Console.WriteLine("CopiedWords: {0}", results[i].NumberOfCopiedWords);
+						Console.WriteLine("Information: {0} copied words ({1}%)", results[i].NumberOfCopiedWords, results[i].Percents);
+						Console.WriteLine("Comperison link: {0}", results[i].EmbededComparison);
+
+						#region Optional: Download result full text. Uncomment to activate
+
+						//using (var stream = createdProcess.DownloadResultText(results[i]))
+						//using (var sr = new StreamReader(stream, Encoding.UTF8))
+						//{
+						//	string resultFullText = sr.ReadToEnd();
+						//	resultFullText = WebUtility.HtmlDecode(resultFullText); // Decode the text. Treat it like HTML.
+						//	Console.WriteLine("Result full-text:");
+						//	Console.WriteLine("*****************");
+						//	Console.WriteLine(resultFullText);
+						//}
+
+						#endregion
 					}
 				}
+
+				#endregion
+
+				#region Optional: Download source full text. Uncomment to activate.
+
+				//using (var stream = createdProcess.DownloadSourceText())
+				//using (var sr = new StreamReader(stream, Encoding.UTF8))
+				//{
+				//	string sourceFullText = sr.ReadToEnd();
+				//	sourceFullText = WebUtility.HtmlDecode(sourceFullText); // Decode the text. Treat it like HTML.
+				//	Console.WriteLine("Source full-text:");
+				//	Console.WriteLine("*****************");
+				//	Console.WriteLine(sourceFullText);
+				//}
 
 				#endregion
 			}
