@@ -24,8 +24,6 @@
 
 using System;
 using System.IO;
-using System.Net;
-using System.Text;
 using System.Threading;
 using Copyleaks.SDK.API;
 using Copyleaks.SDK.API.Exceptions;
