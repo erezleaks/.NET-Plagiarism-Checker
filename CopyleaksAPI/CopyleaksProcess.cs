@@ -178,6 +178,23 @@ namespace Copyleaks.SDK.API
 			}
 		}
 
+		public ComparisonResult DownloadResultComparison(ResultRecord result)
+		{
+			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
+			string json;
+			using (HttpClient client = new HttpClient())
+			{
+				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
+
+				HttpResponseMessage msg = client.GetAsync(result.ComparisonReport).Result;
+				if (!msg.IsSuccessStatusCode)
+					throw new CommandFailedException(msg);
+
+				json = msg.Content.ReadAsStringAsync().Result;
+			}
+			return JsonConvert.DeserializeObject<ComparisonResult>(json);
+		}
+
 		/// <summary>
 		/// Deletes the process once it has finished running
 		/// </summary>

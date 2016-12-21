@@ -59,6 +59,7 @@
     <Compile Include="Models\Responses\CountCreditsResponse.cs" />
     <Compile Include="Models\Responses\CreateResourceResponse.cs" />
     <Compile Include="Models\Responses\ProcessInList.cs" />
+    <Compile Include="Models\ResultComparison.cs" />
     <Compile Include="Models\ResultRecord.cs" />
     <Compile Include="Models\SupportedFileTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
