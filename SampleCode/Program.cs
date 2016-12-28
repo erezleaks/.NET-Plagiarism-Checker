@@ -164,11 +164,12 @@ namespace Copyleaks.SDK.SampleCode
 					{
 						Console.WriteLine();
 						Console.WriteLine("------------------------------------------------");
-						Console.WriteLine("Title: {0}", results[i].Title);
-						Console.WriteLine("Information: {0} copied words ({1}%)", results[i].NumberOfCopiedWords, results[i].Percents);
-						Console.WriteLine("Introduction: {0}", results[i].Introduction);
 						Console.WriteLine("Url: {0}", results[i].URL);
-						Console.WriteLine("Comperison link: {0}", results[i].EmbededComparison);
+						Console.WriteLine("Information: {0} copied words ({1}%)", results[i].NumberOfCopiedWords, results[i].Percents);
+						Console.WriteLine("Comparison report: {0}", results[i].ComparisonReport);
+						Console.WriteLine("Title: {0}", results[i].Title);
+						Console.WriteLine("Introduction: {0}", results[i].Introduction);
+						Console.WriteLine("Embeded comparison: {0}", results[i].EmbededComparison);
 
 						#region Optional: Download result full text. Uncomment to activate
 
