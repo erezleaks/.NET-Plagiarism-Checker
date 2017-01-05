@@ -112,7 +112,10 @@ private static void Scan(string email, string apiKey)
 		{
 			for (int i = 0; i < results.Length; ++i)
 			{
-				Console.WriteLine("Url: {0}", results[i].URL);
+				if (results[i].URL != null)
+				{
+					Console.WriteLine("Url: {0}", results[i].URL);
+				}
 				Console.WriteLine("Information: {0} copied words ({1}%)", results[i].NumberOfCopiedWords, results[i].Percents);
 				Console.WriteLine("Comparison report: {0}", results[i].ComparisonReport);
 				Console.WriteLine("Title: {0}", results[i].Title);
