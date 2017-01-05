@@ -163,8 +163,10 @@ namespace Copyleaks.SDK.SampleCode
 					{
 						Console.WriteLine();
 						Console.WriteLine("------------------------------------------------");
-						Console.WriteLine("Title: {0}", results[i].Title);
+						Console.WriteLine("Url: {0}", results[i].URL);
 						Console.WriteLine("Information: {0} copied words ({1}%)", results[i].NumberOfCopiedWords, results[i].Percents);
+						Console.WriteLine("Comparison report: {0}", results[i].ComparisonReport);
+						Console.WriteLine("Title: {0}", results[i].Title);
 						Console.WriteLine("Introduction: {0}", results[i].Introduction);
 						if (results[i].URL != null)
 							Console.WriteLine("Url: {0}", results[i].URL);
