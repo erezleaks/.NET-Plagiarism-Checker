@@ -170,7 +170,7 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine("Introduction: {0}", results[i].Introduction);
 						if (results[i].URL != null)
 							Console.WriteLine("Url: {0}", results[i].URL);
-						Console.WriteLine("Comparison link: {0}", results[i].EmbededComparison);
+						Console.WriteLine("Embeded comparison: {0}", results[i].EmbededComparison);
 
 						#region Optional: Download result full text. Uncomment to activate
 
