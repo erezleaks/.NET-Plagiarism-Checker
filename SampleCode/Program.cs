@@ -115,7 +115,6 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine("ERROR: The URL ('{0}') is invalid.", options.URL); // Bad URL format.
 						Environment.Exit(1);
 					}
-
 					createdProcess = copyleaks.CreateByUrl(uri, scanOptions);
 				}
 				else
@@ -167,8 +166,9 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine("Title: {0}", results[i].Title);
 						Console.WriteLine("Information: {0} copied words ({1}%)", results[i].NumberOfCopiedWords, results[i].Percents);
 						Console.WriteLine("Introduction: {0}", results[i].Introduction);
-						Console.WriteLine("Url: {0}", results[i].URL);
-						Console.WriteLine("Comperison link: {0}", results[i].EmbededComparison);
+						if (results[i].URL != null)
+							Console.WriteLine("Url: {0}", results[i].URL);
+						Console.WriteLine("Comparison link: {0}", results[i].EmbededComparison);
 
 						#region Optional: Download result full text. Uncomment to activate
 
