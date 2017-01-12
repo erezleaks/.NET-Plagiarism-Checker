@@ -10,7 +10,7 @@ With Copyleaks SDK you can submit for scan:
 <li>Free text</li>
 <li>OCR (Optical Character Recognition) - scanning pictures containing textual content <a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">(see full list)</a></li>
 </ul>
-Instructions for using the SDK are below. For a quick example demonstrating the SDK capabilities just look at the code examples under “examples”.
+Instructions for using the SDK are below. For a quick example demonstrating the SDK capabilities just look at the code examples under “examples”. You can also watch the following video demonstrating how to easily integrate with the API - https://www.youtube.com/watch?v=hEC8CcyGZxo. 
 </p>
 <h3>Integration</h3>
 <p>You can integrate with the Copyleaks SDK in one of two ways:</p>
