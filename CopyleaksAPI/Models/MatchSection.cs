@@ -2,7 +2,7 @@
 
 namespace Copyleaks.SDK.API.Models
 {
-	public class IdenticalSection
+	public class MatchSection
 	{
 		[JsonProperty(PropertyName ="WC")]
 		public int WordsCount { get; set; }
@@ -18,15 +18,5 @@ namespace Copyleaks.SDK.API.Models
 
 		[JsonProperty(PropertyName = "SuE")]
 		public int SuspectedEndPos { get; set; }
-	}
-
-	public class ComparisonResult
-	{
-		[JsonProperty(PropertyName = "Identical")]
-		public IdenticalSection[] IdenticalSections { get; set; }
-
-		public int IdenticalCopiedWords { get; set; }
-
-		public int TotalWords { get; set; }
 	}
 }

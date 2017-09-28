@@ -24,6 +24,8 @@
 
 using System;
 using System.IO;
+using System.Net;
+using System.Text;
 using System.Threading;
 using Copyleaks.SDK.API;
 using Copyleaks.SDK.API.Exceptions;
@@ -70,8 +72,8 @@ namespace Copyleaks.SDK.SampleCode
 
 			// Copyleaks api supports two products: Businesses and Academic. 
 			// Select the product the suitible for you.
-			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Businesses);
-			CopyleaksProcess createdProcess;
+			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Academic);
+			CopyleaksProcess scanProcess;
 			ResultRecord[] results;
 			ProcessOptions scanOptions = new ProcessOptions();
 			scanOptions.HttpCallback = httpCallback;
@@ -79,7 +81,7 @@ namespace Copyleaks.SDK.SampleCode
 			// In Sandbox scan you don't need credits. 
 			// Read more @ https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
 			// After you finish the integration with Copyleaks, remove this line.
-			scanOptions.SandboxMode = true;
+			//scanOptions.SandboxMode = true;
 
 			try
 			{
@@ -115,7 +117,7 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine("ERROR: The URL ('{0}') is invalid.", options.URL); // Bad URL format.
 						Environment.Exit(1);
 					}
-					createdProcess = copyleaks.CreateByUrl(uri, scanOptions);
+					scanProcess = copyleaks.CreateByUrl(uri, scanOptions);
 				}
 				else
 				{
@@ -125,9 +127,9 @@ namespace Copyleaks.SDK.SampleCode
 						Environment.Exit(1);
 					}
 
-					createdProcess = copyleaks.CreateByFile(new FileInfo(options.LocalFile), scanOptions);
+					scanProcess = copyleaks.CreateByFile(new FileInfo(options.LocalFile), scanOptions);
 				}
-				Console.WriteLine("Done (PID={0})!", createdProcess.PID);
+				Console.WriteLine("Done (PID={0})!", scanProcess.PID);
 
 				#endregion
 
@@ -139,7 +141,7 @@ namespace Copyleaks.SDK.SampleCode
 				using (var progress = new ProgressBar())
 				{
 					ushort currentProgress;
-					while (!createdProcess.IsCompleted(out currentProgress))
+					while (!scanProcess.IsCompleted(out currentProgress))
 					{
 						progress.Report(currentProgress / 100d);
 						Thread.Sleep(5000);
@@ -151,7 +153,7 @@ namespace Copyleaks.SDK.SampleCode
 
 				#region Processing finished. Getting results
 
-				results = createdProcess.GetResults();
+				results = scanProcess.GetResults();
 
 				if (results.Length == 0)
 				{
@@ -174,7 +176,7 @@ namespace Copyleaks.SDK.SampleCode
 
 						#region Optional: Download result full text. Uncomment to activate
 
-						//using (var stream = createdProcess.DownloadResultText(results[i]))
+						//using (var stream = scanProcess.DownloadResultText(results[i]))
 						//using (var sr = new StreamReader(stream, Encoding.UTF8))
 						//{
 						//	string resultFullText = sr.ReadToEnd();
@@ -185,6 +187,12 @@ namespace Copyleaks.SDK.SampleCode
 						//}
 
 						#endregion
+
+						#region Optional: Download comparison report. Uncomment to activate
+
+						//ComparisonReport report = scanProcess.DownloadResultComparison(results[i]);
+
+						#endregion
 					}
 				}
 
@@ -192,7 +200,7 @@ namespace Copyleaks.SDK.SampleCode
 
 				#region Optional: Download source full text. Uncomment to activate.
 
-				//using (var stream = createdProcess.DownloadSourceText())
+				//using (var stream = scanProcess.DownloadSourceText())
 				//using (var sr = new StreamReader(stream, Encoding.UTF8))
 				//{
 				//	string sourceFullText = sr.ReadToEnd();

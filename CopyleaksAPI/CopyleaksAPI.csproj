@@ -51,6 +51,7 @@
     <Compile Include="Exceptions\TokenExpiredException.cs" />
     <Compile Include="Extentions\AssemblyHelper.cs" />
     <Compile Include="Extentions\HttpClientHelper.cs" />
+    <Compile Include="Models\ComparisonReport.cs" />
     <Compile Include="Models\LoginToken.cs" />
     <Compile Include="Models\ProcessOptions.cs" />
     <Compile Include="Models\Requests\CreateCommandRequest.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="Models\Responses\CountCreditsResponse.cs" />
     <Compile Include="Models\Responses\CreateResourceResponse.cs" />
     <Compile Include="Models\Responses\ProcessInList.cs" />
-    <Compile Include="Models\ResultComparison.cs" />
+    <Compile Include="Models\MatchSection.cs" />
     <Compile Include="Models\ResultRecord.cs" />
     <Compile Include="Models\SupportedFileTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

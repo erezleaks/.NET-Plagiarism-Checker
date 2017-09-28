@@ -178,7 +178,7 @@ namespace Copyleaks.SDK.API
 			}
 		}
 
-		public ComparisonResult DownloadResultComparison(ResultRecord result)
+		public ComparisonReport DownloadResultComparison(ResultRecord result)
 		{
 			this.SecurityToken.Validate(); // may throw 'UnauthorizedAccessException'
 			string json;
@@ -192,7 +192,7 @@ namespace Copyleaks.SDK.API
 
 				json = msg.Content.ReadAsStringAsync().Result;
 			}
-			return JsonConvert.DeserializeObject<ComparisonResult>(json);
+			return JsonConvert.DeserializeObject<ComparisonReport>(json);
 		}
 
 		/// <summary>
