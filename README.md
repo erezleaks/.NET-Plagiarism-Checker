@@ -27,6 +27,7 @@ Install-Package CopyleaksAPI
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
 <h3>Example</h3>
 <p>This code will show you how to scan files or URLs for plagiarism:</p>
+
 <pre>
 using System;
 using System.Threading;
@@ -43,10 +44,8 @@ private static void Scan(string email, string apiKey)
 	scanOptions.SandboxMode = true; // Sandbox mode --> Read more https://api.copyleaks.com/GeneralDocumentation/RequestHeaders#sandbox-mode
 	ResultRecord[] results;
 	try
-
 	{
 		#region Login to Copyleaks cloud
-		
 		Console.Write("Login to Copyleaks cloud...");
 		copyleaks.Login(email, apiKey);
 		Console.WriteLine("Done!");
@@ -142,6 +141,7 @@ private static void Scan(string email, string apiKey)
 	}
 }
 </pre>
+
 <h3>Dependencies:</h3>
 <ul>
 <li><a href="http://www.microsoft.com/en-us/download/details.aspx?id=30653">.Net framework 4.5</a></li>
