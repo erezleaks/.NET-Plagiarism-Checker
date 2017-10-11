@@ -1,4 +1,4 @@
-<h2>Copyleaks SDK</h2>
+<h2>Copyleaks API C# SDK</h2>
 <p>
 Copyleaks SDK is a simple framework that allows you to perform plagiarism scans and track content distribution around the web, using Copyleaks cloud.
 </p>
