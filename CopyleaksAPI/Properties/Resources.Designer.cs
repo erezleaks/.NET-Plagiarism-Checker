@@ -61,15 +61,6 @@ namespace Copyleaks.SDK.API.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to academic.
-        /// </summary>
-        internal static string AcademicServicePage {
-            get {
-                return ResourceManager.GetString("AcademicServicePage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to account.
         /// </summary>
         internal static string AccountPage {
@@ -84,6 +75,15 @@ namespace Copyleaks.SDK.API.Properties {
         internal static string BusinessesServicePage {
             get {
                 return ResourceManager.GetString("BusinessesServicePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to education.
+        /// </summary>
+        internal static string EducationServicePage {
+            get {
+                return ResourceManager.GetString("EducationServicePage", resourceCulture);
             }
         }
         

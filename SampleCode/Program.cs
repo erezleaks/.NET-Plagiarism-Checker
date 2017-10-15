@@ -72,7 +72,7 @@ namespace Copyleaks.SDK.SampleCode
 
 			// Copyleaks api supports two products: Businesses and Academic. 
 			// Select the product the suitible for you.
-			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Academic);
+			CopyleaksCloud copyleaks = new CopyleaksCloud(eProduct.Education);
 			CopyleaksProcess scanProcess;
 			ResultRecord[] results;
 			ProcessOptions scanOptions = new ProcessOptions();
@@ -81,7 +81,7 @@ namespace Copyleaks.SDK.SampleCode
 			// In Sandbox scan you don't need credits. 
 			// Read more @ https://api.copyleaks.com/Documentation/RequestHeaders#sandbox-mode
 			// After you finish the integration with Copyleaks, remove this line.
-			//scanOptions.SandboxMode = true;
+			scanOptions.SandboxMode = true;
 
 			try
 			{
@@ -117,6 +117,7 @@ namespace Copyleaks.SDK.SampleCode
 						Console.WriteLine("ERROR: The URL ('{0}') is invalid.", options.URL); // Bad URL format.
 						Environment.Exit(1);
 					}
+
 					scanProcess = copyleaks.CreateByUrl(uri, scanOptions);
 				}
 				else

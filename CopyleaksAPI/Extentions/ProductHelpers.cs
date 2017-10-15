@@ -15,8 +15,8 @@ namespace Copyleaks.SDK.API.Extentions
 			{
 				case eProduct.Businesses:
 					return Resources.BusinessesServicePage;
-				case eProduct.Academic:
-					return Resources.AcademicServicePage;
+				case eProduct.Education:
+					return Resources.EducationServicePage;
 				case eProduct.Websites:
 					return Resources.WebsitesServicePage;
 				default:

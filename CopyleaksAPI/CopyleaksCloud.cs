@@ -277,6 +277,60 @@ namespace Copyleaks.SDK.API
 			}
 		}
 
+		public CreateMultipleResourcesResponse CreateByFiles(ProcessOptions options, params FileInfo[] files)
+		{
+			if (this.Token == null)
+				throw new UnauthorizedAccessException("Empty token!");
+			else
+				this.Token.Validate();
+
+			string json;
+			using (HttpClient client = new HttpClient())
+			{
+				client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
+
+				client.Timeout = TimeSpan.FromMinutes(10); // Uploading large file may take a while
+
+				HttpResponseMessage msg;
+
+				if (options != null)
+					options.AddHeaders(client);
+
+				using (var content = new MultipartFormDataContent("Upload----" + DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)))
+				{
+					string filename;
+					int counter = 1;
+					foreach (var file in files)
+					{
+						filename = Path.GetFileName(file.FullName);
+						content.Add(new StreamContent(file.OpenRead()), "document_" + (++counter), filename);
+					}
+					msg = client.PostAsync(string.Format("v2/{0}/create-by-file", this.Product.ToName()), content).Result;
+				}
+
+				if (!msg.IsSuccessStatusCode)
+					throw new CommandFailedException(msg);
+
+				json = msg.Content.ReadAsStringAsync().Result;
+			}
+
+			var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy HH:mm:ss" };
+			var data = JsonConvert.DeserializeObject<InnerCreateMultipleResourcesResponse>(json, dateTimeConverter);
+
+			CopyleaksProcess[] processes = new CopyleaksProcess[data.Success.Length];
+			for (int i = 0; i < data.Success.Length; ++i)
+			{
+				processes[i] = new CopyleaksProcess(this.Token, this.Product, data.Success[i], null);
+			}
+
+			return new CreateMultipleResourcesResponse()
+			{
+				Success = processes,
+				Errors = data.Errors
+			};
+		}
+
+
 		/// <summary>
 		/// Submitting picture, containing textual content, to plagiarism scan
 		/// </summary>

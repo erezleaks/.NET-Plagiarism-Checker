@@ -7,9 +7,9 @@
 		/// </summary>
 		Businesses,
 		/// <summary>
-		/// Bests for academic purposes.
+		/// Bests for Education purposes (schools, universities, students, ...).
 		/// </summary>
-		Academic,
+		Education,
 		/// <summary>
 		/// Bests for scanning random HTML URLs.
 		/// </summary>

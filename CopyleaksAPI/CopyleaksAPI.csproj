@@ -58,6 +58,7 @@
     <Compile Include="Models\Responses\BadResponse.cs" />
     <Compile Include="Models\Responses\CheckStatusResponse.cs" />
     <Compile Include="Models\Responses\CountCreditsResponse.cs" />
+    <Compile Include="Models\Responses\CreateMultipleResourcesResponse.cs" />
     <Compile Include="Models\Responses\CreateResourceResponse.cs" />
     <Compile Include="Models\Responses\ProcessInList.cs" />
     <Compile Include="Models\MatchSection.cs" />

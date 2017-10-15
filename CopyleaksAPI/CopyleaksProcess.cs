@@ -212,5 +212,10 @@ namespace Copyleaks.SDK.API
 					throw new CommandFailedException(msg);
 			}
 		}
+
+		public override string ToString()
+		{
+			return this.PID.ToString();
+		}
 	}
 }

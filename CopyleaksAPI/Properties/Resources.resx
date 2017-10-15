@@ -117,14 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AcademicServicePage" xml:space="preserve">
-    <value>academic</value>
-  </data>
   <data name="AccountPage" xml:space="preserve">
     <value>account</value>
   </data>
   <data name="BusinessesServicePage" xml:space="preserve">
     <value>businesses</value>
+  </data>
+  <data name="EducationServicePage" xml:space="preserve">
+    <value>education</value>
   </data>
   <data name="MiscellaneousServicePage" xml:space="preserve">
     <value>miscellaneous</value>
