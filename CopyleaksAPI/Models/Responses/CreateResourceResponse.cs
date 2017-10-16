@@ -31,5 +31,7 @@ namespace Copyleaks.SDK.API.Models.Responses
 		public Guid ProcessId { get; set; }
 
 		public DateTime CreationTimeUTC { get; set; }
+
+		public string Filename { get; set; }
 	}
 }
