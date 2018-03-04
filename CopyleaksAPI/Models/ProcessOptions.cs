@@ -56,11 +56,16 @@ namespace Copyleaks.SDK.API.Models
 		public string EmailCallback { get; set; }
 
 		/// <summary>
-		/// Enable Sandbox mode for testing purposes  
+		/// Enable Sandbox mode for testing purposes
 		/// </summary>
 		public bool SandboxMode { get; set; }
 
-		protected const string COPYLEAKS_HEADER_PREFIX = "copyleaks-";
+        /// <summary>
+        /// Compare files and documents to one another and not against other online or external sources.
+        /// </summary>
+        public bool CompareDocumentsForSimilarity { get; set; }
+
+        protected const string COPYLEAKS_HEADER_PREFIX = "copyleaks-";
 		/// <summary>
 		/// Add custom copyleaks-headers. 
 		/// </summary>
@@ -92,7 +97,11 @@ namespace Copyleaks.SDK.API.Models
 			const string SANDBOX_MODE_HEADER = COPYLEAKS_HEADER_PREFIX + "sandbox-mode";
 			if (this.SandboxMode)
 				client.DefaultRequestHeaders.Add(SANDBOX_MODE_HEADER, "");
-		}
+
+            const string COMPARE_DOCUMENTS_FOR_SIMILARITY_HEADER = COPYLEAKS_HEADER_PREFIX + "compare-documents-for-similarity";
+            if (this.CompareDocumentsForSimilarity)
+                client.DefaultRequestHeaders.Add(COMPARE_DOCUMENTS_FOR_SIMILARITY_HEADER, "");
+        }
 
 	}
 }
