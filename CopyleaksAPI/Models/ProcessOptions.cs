@@ -98,7 +98,7 @@ namespace Copyleaks.SDK.API.Models
 			if (this.SandboxMode)
 				client.DefaultRequestHeaders.Add(SANDBOX_MODE_HEADER, "");
 
-            const string COMPARE_DOCUMENTS_FOR_SIMILARITY_HEADER = "copyleaks-compare-documents-for-similarity";
+            const string COMPARE_DOCUMENTS_FOR_SIMILARITY_HEADER = COPYLEAKS_HEADER_PREFIX + "compare-documents-for-similarity";
             if (this.CompareDocumentsForSimilarity)
                 client.DefaultRequestHeaders.Add(COMPARE_DOCUMENTS_FOR_SIMILARITY_HEADER, "");
         }
