@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Copyleaks.SDK.API.Properties;
 
 namespace Copyleaks.SDK.API.Extentions
 {
@@ -14,11 +9,11 @@ namespace Copyleaks.SDK.API.Extentions
 			switch (product)
 			{
 				case eProduct.Businesses:
-					return Resources.BusinessesServicePage;
+					return Consts.BusinessesServicePage;
 				case eProduct.Education:
-					return Resources.EducationServicePage;
+					return Consts.EducationServicePage;
 				case eProduct.Websites:
-					return Resources.WebsitesServicePage;
+					return Consts.WebsitesServicePage;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

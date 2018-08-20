@@ -41,6 +41,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Consts.cs" />
     <Compile Include="CopyleaksCloud.cs" />
     <Compile Include="eProduct.cs" />
     <Compile Include="Extentions\ProductHelpers.cs" />
@@ -65,19 +66,8 @@
     <Compile Include="Models\ResultRecord.cs" />
     <Compile Include="Models\SupportedFileTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="CopyleaksProcess.cs" />
     <Compile Include="UsersAuthentication.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

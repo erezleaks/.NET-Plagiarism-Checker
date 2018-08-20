@@ -27,14 +27,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Copyleaks.SDK.API.Exceptions;
 using Copyleaks.SDK.API.Extentions;
-using Copyleaks.SDK.API.Properties;
 using Newtonsoft.Json;
 
 namespace Copyleaks.SDK.API
 {
 	public static class UsersAuthentication
 	{
-		private static readonly string LOGIN_PAGE = string.Format("{0}/{1}/login-api", Resources.ServiceVersion, Resources.AccountPage);
+		private static readonly string LOGIN_PAGE = string.Format("{0}/{1}/login-api", Consts.ServiceVersion, Consts.AccountPage);
 
 		/// <summary>
 		/// Login to Copyleaks authentication server.

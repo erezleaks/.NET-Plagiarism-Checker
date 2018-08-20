@@ -33,7 +33,6 @@ using Copyleaks.SDK.API.Extentions;
 using Copyleaks.SDK.API.Models;
 using Copyleaks.SDK.API.Models.Requests;
 using Copyleaks.SDK.API.Models.Responses;
-using Copyleaks.SDK.API.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -92,7 +91,7 @@ namespace Copyleaks.SDK.API
 				{
 					client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
 
-					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/count-credits", Resources.ServiceVersion, this.Product.ToName())).Result;
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/count-credits", Consts.ServiceVersion, this.Product.ToName())).Result;
 					if (!msg.IsSuccessStatusCode)
 						throw new CommandFailedException(msg);
 
@@ -126,7 +125,7 @@ namespace Copyleaks.SDK.API
 				{
 					client.SetCopyleaksClient(HttpContentTypes.Json, this.Token);
 
-					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/list", Resources.ServiceVersion, this.Product.ToName())).Result;
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/list", Consts.ServiceVersion, this.Product.ToName())).Result;
 					if (!msg.IsSuccessStatusCode)
 						throw new CommandFailedException(msg);
 
@@ -204,7 +203,7 @@ namespace Copyleaks.SDK.API
 				if (options != null)
 					options.AddHeaders(client);
 
-				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Resources.ServiceVersion, this.Product.ToName(), "create-by-url"), content).Result;
+				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Consts.ServiceVersion, this.Product.ToName(), "create-by-url"), content).Result;
 
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
@@ -261,7 +260,7 @@ namespace Copyleaks.SDK.API
 				using (FileStream stream = localfile.OpenRead())
 				{
 					content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(localfile.Name));
-					msg = client.PostAsync(string.Format("{0}/{1}/create-by-file", Resources.ServiceVersion, this.Product.ToName()), content).Result;
+					msg = client.PostAsync(string.Format("{0}/{1}/create-by-file", Consts.ServiceVersion, this.Product.ToName()), content).Result;
 				}
 
 				if (!msg.IsSuccessStatusCode)
@@ -371,7 +370,7 @@ namespace Copyleaks.SDK.API
 				{
 					content.Add(new StreamContent(stream, (int)stream.Length), "document", Path.GetFileName(localfile.Name));
 					msg = client.PostAsync(
-						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Resources.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(ocrLanguage)),
+						string.Format("{0}/{1}/create-by-file-ocr?language={2}", Consts.ServiceVersion, this.Product.ToName(), Uri.EscapeDataString(ocrLanguage)),
 						content).Result;
 				}
 
@@ -417,7 +416,7 @@ namespace Copyleaks.SDK.API
 				if (options != null)
 					options.AddHeaders(client);
 
-				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Resources.ServiceVersion, this.Product.ToName(), "create-by-text"), content).Result;
+				msg = client.PostAsync(string.Format("{0}/{1}/{2}", Consts.ServiceVersion, this.Product.ToName(), "create-by-text"), content).Result;
 
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
@@ -452,7 +451,7 @@ namespace Copyleaks.SDK.API
 				{
 					client.SetCopyleaksClient(HttpContentTypes.Json);
 
-					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/ocr-languages-list", Resources.ServiceVersion, Resources.MiscellaneousServicePage)).Result;
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/ocr-languages-list", Consts.ServiceVersion, Consts.MiscellaneousServicePage)).Result;
 					if (!msg.IsSuccessStatusCode)
 						throw new CommandFailedException(msg);
 
@@ -477,7 +476,7 @@ namespace Copyleaks.SDK.API
 				{
 					client.SetCopyleaksClient(HttpContentTypes.Json);
 
-					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/supported-file-types", Resources.ServiceVersion, Resources.MiscellaneousServicePage)).Result;
+					HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/supported-file-types", Consts.ServiceVersion, Consts.MiscellaneousServicePage)).Result;
 					if (!msg.IsSuccessStatusCode)
 						throw new CommandFailedException(msg);
 

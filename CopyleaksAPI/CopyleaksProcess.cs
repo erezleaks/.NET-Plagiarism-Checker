@@ -32,7 +32,6 @@ using Copyleaks.SDK.API.Extentions;
 using Copyleaks.SDK.API.Helpers;
 using Copyleaks.SDK.API.Models;
 using Copyleaks.SDK.API.Models.Responses;
-using Copyleaks.SDK.API.Properties;
 using Newtonsoft.Json;
 
 namespace Copyleaks.SDK.API
@@ -106,7 +105,7 @@ namespace Copyleaks.SDK.API
 
 				HttpResponseMessage msg;
 				msg = Retry.Http<HttpResponseMessage>(
-					() => client.GetAsync(string.Format("{0}/{1}/{2}/status", Resources.ServiceVersion, this.Product.ToName(), this.PID)).Result,
+					() => client.GetAsync(string.Format("{0}/{1}/{2}/status", Consts.ServiceVersion, this.Product.ToName(), this.PID)).Result,
 					TimeSpan.FromSeconds(3),
 					3);
 
@@ -135,7 +134,7 @@ namespace Copyleaks.SDK.API
 			{
 				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
 
-				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/{2}/result", Resources.ServiceVersion, this.Product.ToName(), this.PID)).Result;
+				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/{1}/{2}/result", Consts.ServiceVersion, this.Product.ToName(), this.PID)).Result;
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
 
@@ -154,7 +153,7 @@ namespace Copyleaks.SDK.API
 			{
 				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
 
-				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/downloads/source-text?pid={1}", Resources.ServiceVersion, this.PID)).Result;
+				HttpResponseMessage msg = client.GetAsync(string.Format("{0}/downloads/source-text?pid={1}", Consts.ServiceVersion, this.PID)).Result;
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
 
@@ -207,7 +206,7 @@ namespace Copyleaks.SDK.API
 			{
 				client.SetCopyleaksClient(HttpContentTypes.Json, this.SecurityToken);
 
-				HttpResponseMessage msg = client.DeleteAsync(string.Format("{0}/{1}/{2}/delete", Resources.ServiceVersion, this.Product.ToName(), this.PID)).Result;
+				HttpResponseMessage msg = client.DeleteAsync(string.Format("{0}/{1}/{2}/delete", Consts.ServiceVersion, this.Product.ToName(), this.PID)).Result;
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
 			}

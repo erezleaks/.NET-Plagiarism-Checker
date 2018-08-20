@@ -27,7 +27,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading;
-using Copyleaks.SDK.API.Properties;
 
 namespace Copyleaks.SDK.API.Extentions
 {
@@ -37,9 +36,9 @@ namespace Copyleaks.SDK.API.Extentions
 
 		public static void SetCopyleaksClient(this HttpClient client, string contentType)
 		{
-			client.BaseAddress = new Uri(Resources.ServiceEntryPoint);
+			client.BaseAddress = new Uri(Consts.ServiceEntryPoint);
 
-			client.Timeout = TimeSpan.FromMilliseconds(int.Parse(Resources.RequestsTimeout));
+			client.Timeout = TimeSpan.FromMilliseconds(Consts.RequestsTimeout);
 
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
