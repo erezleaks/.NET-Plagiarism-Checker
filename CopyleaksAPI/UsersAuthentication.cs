@@ -53,7 +53,7 @@ namespace Copyleaks.SDK.API
 			LoginToken token;
 			using (HttpClient client = new HttpClient())
 			{
-				client.SetCopyleaksClient(HttpContentTypes.UrlEncoded);
+				client.SetCopyleaksClient(HttpContentTypes.Json);
 				HttpResponseMessage msg = client.PostAsync(LOGIN_PAGE, new FormUrlEncodedContent(new[]
 					{
 						new KeyValuePair<string, string>("email", email),

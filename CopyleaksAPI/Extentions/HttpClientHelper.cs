@@ -32,7 +32,7 @@ namespace Copyleaks.SDK.API.Extentions
 {
 	internal static class HttpClientHelper
 	{
-		static readonly string ASSEMBLY_VERSION = Assembly.GetExecutingAssembly().GetVersion();
+		static readonly string ASSEMBLY_VERSION = "3.5.0";
 
 		public static void SetCopyleaksClient(this HttpClient client, string contentType)
 		{
