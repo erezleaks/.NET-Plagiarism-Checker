@@ -49,8 +49,7 @@ namespace Copyleaks.SDK.API.Extentions
 			// The Copyleaks SDK allows language localization for the informative and error messages.  
 			// To customize the language, change the value of "CurrentThread.CurrentCulture" to the wanted language code. The changes you made will affect the next
 			// requests to Copyleks cloud, with English ("en-US") being the default language if the requested language is not supported.
-
-			client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(Thread.CurrentThread.CurrentCulture.Name));
+			//client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(Thread.CurrentThread.CurrentCulture.Name));
 		}
 		public static void SetCopyleaksClient(this HttpClient client, string contentType, LoginToken SecurityToken)
 		{
