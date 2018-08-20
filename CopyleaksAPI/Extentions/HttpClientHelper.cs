@@ -32,8 +32,6 @@ namespace Copyleaks.SDK.API.Extentions
 {
 	internal static class HttpClientHelper
 	{
-		static readonly string ASSEMBLY_VERSION = "3.5.0";
-
 		public static void SetCopyleaksClient(this HttpClient client, string contentType)
 		{
 			client.BaseAddress = new Uri(Consts.ServiceEntryPoint);
@@ -42,7 +40,7 @@ namespace Copyleaks.SDK.API.Extentions
 
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
-			client.DefaultRequestHeaders.UserAgent.ParseAdd(string.Format("Copyleaks-.NET-SDK/{0}", ASSEMBLY_VERSION));
+			client.DefaultRequestHeaders.UserAgent.ParseAdd("Copyleaks-.NET-SDK/1.0");
 
 			// SDK Language Localization
 			// ----------------------
