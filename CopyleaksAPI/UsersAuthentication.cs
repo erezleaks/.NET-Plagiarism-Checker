@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using Copyleaks.SDK.API.Exceptions;
 using Copyleaks.SDK.API.Extentions;
 using Newtonsoft.Json;
@@ -54,11 +55,11 @@ namespace Copyleaks.SDK.API
 			using (HttpClient client = new HttpClient())
 			{
 				client.SetCopyleaksClient(HttpContentTypes.Json);
-				HttpResponseMessage msg = client.PostAsync(LOGIN_PAGE, new FormUrlEncodedContent(new[]
-					{
-						new KeyValuePair<string, string>("email", email),
-						new KeyValuePair<string, string>("apikey", apiKey),
-					})).Result;
+				HttpResponseMessage msg = client.PostAsync(LOGIN_PAGE, new StringContent(JsonConvert.SerializeObject(new
+				{
+					email = email,
+					apikey = apiKey
+				}), Encoding.UTF8, HttpContentTypes.Json)).Result;
 
 				if (!msg.IsSuccessStatusCode)
 					throw new CommandFailedException(msg);
